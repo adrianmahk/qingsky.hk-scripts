@@ -349,19 +349,13 @@ function getStars() {
 }
 
  function darkMode(){
- 	//var darkOverlay = document.createElement("div");
  	var darkOverlay = document.getElementById("dark-mode-overlay");
- 	darkOverlay.style.visibility = "visible";
- 	darkOverlay.style.opacity = 1;
- 	//darkOverlay.style.display = "block";
- 	//darkOverlay.style.backgroundColor = "rgba(40,40,40,0.9)";
- 	//darkOverlay.style.position = "fixed";
- 	//darkOverlay.style.top = "0";
- 	//darkOverlay.style.left = "0";
- 	//darkOverlay.style.height = "100%";
- 	//darkOverlay.style.width = "100%";
- 	//darkOverlay.style.zindex = "200";
- 	//document.body.appendChild(darkOverlay);
- 	
-	//alert("go to sleep kid.");
+ 	if (darkOverlay.style.visibility = "hidden"){
+	 	darkOverlay.style.visibility = "visible";
+	 	darkOverlay.style.opacity = 1;
+ 	}
+ 	else {
+ 		darkOverlay.style.visibility = "hidden";
+	 	darkOverlay.style.opacity = 0;
+ 	}
  }
