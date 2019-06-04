@@ -351,7 +351,9 @@ function getStars() {
  function darkMode(){
  	//var darkOverlay = document.createElement("div");
  	var darkOverlay = document.getElementById("dark-mode-overlay");
- 	darkOverlay.style.display = "block";
+ 	darkOverlay.style.visibility = "visible";
+ 	darkOverlay.style.opacity = 1;
+ 	//darkOverlay.style.display = "block";
  	//darkOverlay.style.backgroundColor = "rgba(40,40,40,0.9)";
  	//darkOverlay.style.position = "fixed";
  	//darkOverlay.style.top = "0";
