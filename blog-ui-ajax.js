@@ -354,7 +354,7 @@ function getStars() {
 
  function darkMode(){
  	var darkOverlay = document.getElementById("dark-mode-overlay");
- 	if (darkOverlay.style.visibility == "hidden"){
+ 	if (darkOverlay.style.visibility != "visible"){
 	 	darkOverlay.style.visibility = "visible";
 	 	darkOverlay.style.opacity = 1;
  	}
