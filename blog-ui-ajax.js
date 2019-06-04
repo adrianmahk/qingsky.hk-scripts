@@ -332,7 +332,7 @@ function getStars() {
    someDate.setDate(someDate.getDate() + 1);
      var cookie = "star_today=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
      document.cookie = (cookie);
-     alert(cookie);
+     //alert(cookie);
  }
  var str = '';
  var starCount = star;
