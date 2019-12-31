@@ -386,7 +386,9 @@ function getStars() {
 		 if (retryTimes > 0) {
 		 	var str = '平行時空：' + retryTimes;
 		 	var starRetryDiv = document.getElementById('star-2020-retry');
-			starRetryDiv.innerHTML = str;
+		 	if (starRetryDiv){
+				starRetryDiv.innerHTML = str;
+			}
 		 }
 	}
 
