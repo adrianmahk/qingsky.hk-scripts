@@ -402,12 +402,12 @@ function getStars() {
 		var cookie =  "star-2020-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/";
 	    document.cookie = (cookie);
 		
-		getStarsYear();
+		getStars2020();
 	}
 	
 function clearCookie(cookie_key){
 	var someDate = new Date(0);
-	var cookie =  cookie_key + "=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
+	var cookie =  cookie_key + "=" + 0 +"; expires=" +someDate.toUTCString()+ "; path=/";
     document.cookie = (cookie);
 }
 
