@@ -373,7 +373,7 @@ function getStars() {
 		         starCount--;
 		    }
 		    else {
-		         str += '☆　';
+		         str += '⭐︎　';
 		    }
 		 }
 		 
