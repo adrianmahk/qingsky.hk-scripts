@@ -143,24 +143,22 @@
   function detectAjaxLoad(){
 	if (!document.body.className.match("item-view")){
       if (!document.body.className.match("archive-view")){
-          if (!document.body.className.match("label-view")){
-	        var height =  window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-	        var current = document.body.scrollTop || document.scrollingElement.scrollTop;
-	        var next_page_link = document.querySelector('[id*="blog-pager-older-link"]');
-	        if (document.body.classList.contains("home-view"))
-	          current = current- height*.5;
-	        if ((next_page_link) && (current + height - 150 > next_page_link.offsetTop) ){//&& (0)){
-	            var ajax_msg = document.getElementById("ajax-msg");
-	            next_page_link.parentNode.removeChild(next_page_link);
-	            ajax_msg.style.display = "table";
-	            setTimeout(function(){
-				  ajaxLoad(next_page_link.getAttribute("href"));
-	              timer = setTimeout(function(){
-	                  document.getElementById("ajax-retry-msg").style.display="table-cell";
-	              }, 5000);
-	            }, 1000);
-	        }
-      	}
+        var height =  window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        var current = document.body.scrollTop || document.scrollingElement.scrollTop;
+        var next_page_link = document.querySelector('[id*="blog-pager-older-link"]');
+        if (document.body.classList.contains("home-view"))
+          current = current- height*.5;
+        if ((next_page_link) && (current + height - 150 > next_page_link.offsetTop) ){//&& (0)){
+            var ajax_msg = document.getElementById("ajax-msg");
+            next_page_link.parentNode.removeChild(next_page_link);
+            ajax_msg.style.display = "table";
+            setTimeout(function(){
+			  ajaxLoad(next_page_link.getAttribute("href"));
+              timer = setTimeout(function(){
+                  document.getElementById("ajax-retry-msg").style.display="table-cell";
+              }, 5000);
+            }, 1000);
+        }
       }
     }
   }
