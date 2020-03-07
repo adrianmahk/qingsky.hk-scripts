@@ -329,8 +329,8 @@ function getStars() {
  if (star == ""){
   star = Math.floor(Math.random() * 10) + 1;
    var someDate = new Date();
-   var timeZone = -(someDate.getTimezoneOffset() / 60);
-   someDate.setHours(timeZone, 0, 0);
+   //var timeZone = -(someDate.getTimezoneOffset() / 60);
+   someDate.setHours(0, 0, 0);
    someDate.setDate(someDate.getDate() + 1);
      var cookie = "star_today=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
      document.cookie = (cookie);
@@ -354,59 +354,59 @@ function getStars() {
  }
 }
 
-	function getStars2020() {      
-		 var star = getCookie("star-2020");
-		 if (star == ""){
-		  star = Math.floor(Math.random() * 10) + 1;
-		   var someDate = new Date(2021,0,1,0,0,0,0);
-		   var timeZone = -(someDate.getTimezoneOffset() / 60);
-		   someDate.setHours(timeZone, 0, 0);
-		   //someDate.setDate(someDate.getDate() + 1);
-		     var cookie = "star-2020=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
-		     document.cookie = (cookie);
-		     //alert(cookie);
-		 }
-		 var str = '';
-		 var starCount = star;
-		 for (i = 0; i < 10 ; i ++){
-		    if (starCount > 0){
-		         str += '★　';
-		         starCount--;
-		    }
-		    else {
-		         str += '☆　';
-		    }
-		 }
-		 
-		 var starDiv = document.getElementById('star-2020');
-		 if (starDiv){
-		 	starDiv.innerHTML = str;
-		 }
-		 
-		 var retryTimes = getCookie('star-2020-retry');
-		 if (retryTimes > 0) {
-		 	var str = '平行時空：' + retryTimes;
-		 	var starRetryDiv = document.getElementById('star-2020-retry');
-		 	if (starRetryDiv){
-				starRetryDiv.innerHTML = str;
-			}
-		 }
-	}
-
-	function retryStarsYear(){
-		clearCookie('star-2020');
-		var retryTimes = getCookie('star-2020-retry');
-		if (retryTimes == '') {
-			retryTimes = 0;
+function getStars2020() {      
+	 var star = getCookie("star-2020");
+	 if (star == ""){
+	  star = Math.floor(Math.random() * 10) + 1;
+	   var someDate = new Date(2021,0,1,0,0,0,0);
+	   //var timeZone = -(someDate.getTimezoneOffset() / 60);
+	   //someDate.setHours(timeZone, 0, 0);
+	   //someDate.setDate(someDate.getDate() + 1);
+	     var cookie = "star-2020=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
+	     document.cookie = (cookie);
+	     //alert(cookie);
+	 }
+	 var str = '';
+	 var starCount = star;
+	 for (i = 0; i < 10 ; i ++){
+	    if (starCount > 0){
+	         str += '★　';
+	         starCount--;
+	    }
+	    else {
+	         str += '☆　';
+	    }
+	 }
+	 
+	 var starDiv = document.getElementById('star-2020');
+	 if (starDiv){
+	 	starDiv.innerHTML = str;
+	 }
+	 
+	 var retryTimes = getCookie('star-2020-retry');
+	 if (retryTimes > 0) {
+	 	var str = '平行時空：' + retryTimes;
+	 	var starRetryDiv = document.getElementById('star-2020-retry');
+	 	if (starRetryDiv){
+			starRetryDiv.innerHTML = str;
 		}
-		retryTimes++;
-		var someDate = new Date(2021, 0, 1, 0, 0, 0, 0);
-		//alert(someDate);
-		var cookie =  "star-2020-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/";
-	    document.cookie = (cookie);
-		
-		getStars2020();
+	 }
+}
+
+function retryStarsYear(){
+	clearCookie('star-2020');
+	var retryTimes = getCookie('star-2020-retry');
+	if (retryTimes == '') {
+		retryTimes = 0;
 	}
+	retryTimes++;
+	var someDate = new Date(2021, 0, 1, 0, 0, 0, 0);
+	//alert(someDate);
+	var cookie =  "star-2020-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/";
+    document.cookie = (cookie);
+	
+	getStars2020();
+}
 	
 function clearCookie(cookie_key){
 	var someDate = new Date(0);
