@@ -319,7 +319,7 @@
         var someDate = new Date();
         var numberOfDaysToAdd = 30;
         someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-        var str = "font_size=" + px +"; expires=" +someDate.toUTCString()+ "; path=/";
+        var str = "font_size=" + px +"; expires=" +someDate.toUTCString()+ "; path=/; samesite";
         document.cookie = str;
       }
       
@@ -332,7 +332,7 @@ function getStars() {
    //var timeZone = -(someDate.getTimezoneOffset() / 60);
    someDate.setHours(0, 0, 0);
    someDate.setDate(someDate.getDate() + 1);
-     var cookie = "star_today=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
+     var cookie = "star_today=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite";
      document.cookie = (cookie);
      //alert(cookie);
  }
@@ -362,7 +362,7 @@ function getStars2020() {
 	   //var timeZone = -(someDate.getTimezoneOffset() / 60);
 	   //someDate.setHours(timeZone, 0, 0);
 	   //someDate.setDate(someDate.getDate() + 1);
-	     var cookie = "star-2020=" + star +"; expires=" +someDate.toUTCString()+ "; path=/";
+	     var cookie = "star-2020=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite";
 	     document.cookie = (cookie);
 	     //alert(cookie);
 	 }
@@ -402,7 +402,7 @@ function retryStarsYear(){
 	retryTimes++;
 	var someDate = new Date(2021, 0, 1, 0, 0, 0, 0);
 	//alert(someDate);
-	var cookie =  "star-2020-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/";
+	var cookie =  "star-2020-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/; samesite";
     document.cookie = (cookie);
 	
 	getStars2020();
@@ -410,7 +410,7 @@ function retryStarsYear(){
 	
 function clearCookie(cookie_key){
 	var someDate = new Date(0);
-	var cookie =  cookie_key + "=" + 0 +"; expires=" +someDate.toUTCString()+ "; path=/";
+	var cookie =  cookie_key + "=" + 0 +"; expires=" +someDate.toUTCString()+ "; path=/; samesite";
     document.cookie = (cookie);
 }
 
