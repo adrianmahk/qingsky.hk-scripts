@@ -415,7 +415,10 @@ function clearCookie(cookie_key){
 }
 
  function darkMode(){
- 	var darkOverlay = document.getElementById("dark-mode-overlay");
+ 	var darkOverlay = document.getElementById("dark_mode_overlay");
+  if (!darkOverlay) {
+    darkOverlay = document.getElementById("dark-mode-overlay");
+  }
  	if (darkOverlay.style.visibility != "visible"){
 	 	darkOverlay.style.visibility = "visible";
 	 	darkOverlay.style.opacity = 1;
