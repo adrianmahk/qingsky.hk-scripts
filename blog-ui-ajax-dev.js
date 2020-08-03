@@ -415,16 +415,19 @@ function clearCookie(cookie_key){
 }
 
  function darkMode(){
+  var body = document.body;
  	var darkOverlay = document.getElementById("dark_mode_overlay");
   if (!darkOverlay) {
     darkOverlay = document.getElementById("dark-mode-overlay");
   }
- 	if (darkOverlay.style.visibility != "visible"){
-	 	darkOverlay.style.visibility = "visible";
+ 	if (darkOverlay.style.opacity == 1){
+	 	// darkOverlay.style.visibility = "visible";
 	 	darkOverlay.style.opacity = 1;
+    body.classList.add("dark-mode");
  	}
  	else {
- 		darkOverlay.style.visibility = "hidden";
+ 		// darkOverlay.style.visibility = "hidden";
 	 	darkOverlay.style.opacity = 0;
+    body.classList.remove("dark-mode");
  	}
  }
