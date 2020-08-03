@@ -420,7 +420,8 @@ function clearCookie(cookie_key){
   if (!darkOverlay) {
     darkOverlay = document.getElementById("dark-mode-overlay");
   }
- 	if (darkOverlay.style.opacity == 0){
+ 	// if (darkOverlay.style.opacity == 0){
+  if (!body.classList.contains("dark-mode")) {
 	 	// darkOverlay.style.visibility = "visible";
 	 	darkOverlay.style.opacity = 1;
     body.classList.add("dark-mode");
