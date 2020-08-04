@@ -7,28 +7,30 @@
       ori = getOrientation_cust();
       if (detectmob()){
         fixBgHeight();
-		makeCmUnfocusable();
+		    makeCmUnfocusable();
       }
       if (!loadMainAlready && !document.body.className.match("item-view")){
-		if (!checkNeedRefresh()){
-	      	loadMain();
+  		  if (!checkNeedRefresh()){
+  	      	loadMain();
         }
-        loadMainAlready = 1;
+          loadMainAlready = 1;
       }
-	  window.addEventListener("pagehide", function (){
-	  	if (!document.body.className.match("item-view")){
+  	  window.addEventListener("pagehide", function (){
+    	if (!document.body.className.match("item-view")){
         	saveMain();
         	saveScrollPos();
       	}else {
         	setFlag();
       	}
-	  });
-	  loadIndie();
-	  getStars();
-	  getStars2020();
+  	  });
+  	  loadIndie();
+  	  getStars();
+  	  getStars2020();
       inited = 1;
+      darkModeInit();
     }
   }
+  
   function detectmob() {
    if( navigator.userAgent.match(/Android/i)
    || navigator.userAgent.match(/webOS/i)
@@ -270,58 +272,58 @@
     }
   }
 
-      function getCookie(cname) {
-        var name = cname + '=';
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-                                     for(var i = 0; i <ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-                 c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
-      }
-      return "";
-      }
-      function changeFontSizeInit(){
-        setTimeout(function(){
-          var font_size_cookie = getCookie("font_size");
-          if (font_size_cookie != ""){
-            var post_body =	document.querySelector('[id^="post-body-"]');
-		  if (post_body!=null)
-            post_body.style.fontSize =	font_size_cookie;
-          }
-        }, 1000);
-      }
-      function changeFontSize(){
+  function getCookie(cname) {
+    var name = cname + '=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+                                 for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+             c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+  }
+  function changeFontSizeInit(){
+    setTimeout(function(){
+      var font_size_cookie = getCookie("font_size");
+      if (font_size_cookie != ""){
         var post_body =	document.querySelector('[id^="post-body-"]');
-        var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
-        if (font_size=="12px"){
-          post_body.style.fontSize =	"14px";
-          setCookie("14px");
-        }
-        if (font_size=="14px"){
-          post_body.style.fontSize =	"16px";
-          setCookie("16px");
-        }
-        if (font_size=="16px"){
-          post_body.style.fontSize =	"18px";
-          setCookie("18px");
-        }
-        if (font_size=="18px"){
-          post_body.style.fontSize =	"12px";
-          setCookie("12px");
-        }
+  if (post_body!=null)
+        post_body.style.fontSize =	font_size_cookie;
       }
-      function setCookie(px){
-        var someDate = new Date();
-        var numberOfDaysToAdd = 30;
-        someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-        var str = "font_size=" + px +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
-        document.cookie = str;
-      }
+    }, 1000);
+  }
+  function changeFontSize(){
+    var post_body =	document.querySelector('[id^="post-body-"]');
+    var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
+    if (font_size=="12px"){
+      post_body.style.fontSize =	"14px";
+      setCookie("14px");
+    }
+    if (font_size=="14px"){
+      post_body.style.fontSize =	"16px";
+      setCookie("16px");
+    }
+    if (font_size=="16px"){
+      post_body.style.fontSize =	"18px";
+      setCookie("18px");
+    }
+    if (font_size=="18px"){
+      post_body.style.fontSize =	"12px";
+      setCookie("12px");
+    }
+  }
+  function setCookie(px){
+    var someDate = new Date();
+    var numberOfDaysToAdd = 30;
+    someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
+    var str = "font_size=" + px +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+    document.cookie = str;
+  }
       
       
 function getStars() {      
@@ -414,21 +416,36 @@ function clearCookie(cookie_key){
     document.cookie = (cookie);
 }
 
- function darkMode(){
+function darkMode(){
   var body = document.body;
- 	var darkOverlay = document.getElementById("dark_mode_overlay");
+	var darkOverlay = document.getElementById("dark_mode_overlay");
   if (!darkOverlay) {
     darkOverlay = document.getElementById("dark-mode-overlay");
   }
- 	// if (darkOverlay.style.opacity == 0){
+	// if (darkOverlay.style.opacity == 0){
+
+  var someDate = new Date();
+  var numberOfDaysToAdd = 30;
+  someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
   if (!body.classList.contains("dark-mode")) {
-	 	// darkOverlay.style.visibility = "visible";
+   	// darkOverlay.style.visibility = "visible";
     body.classList.add("dark-mode");
+    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
     darkOverlay.style.opacity = 1;
- 	}
- 	else {
- 		// darkOverlay.style.visibility = "hidden";
+  	}
+	else {
+		// darkOverlay.style.visibility = "hidden";
     body.classList.remove("dark-mode");
+    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
     darkOverlay.style.opacity = 0;
- 	}
- }
+	}
+  document.cookie = cookie;
+}
+function darkModeInit() {
+  var cookie_value = getCookie("dark-mode");
+  if (cookie_value != "") {
+    body.classList.add("dark-mode");
+    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+    darkOverlay.style.opacity = 1;
+  }
+}
