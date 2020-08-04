@@ -436,7 +436,7 @@ function darkMode(){
 	else {
 		// darkOverlay.style.visibility = "hidden";
     body.classList.remove("dark-mode");
-    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+    var cookie =  "dark-mode=0; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
     darkOverlay.style.opacity = 0;
 	}
   document.cookie = cookie;
@@ -453,7 +453,10 @@ function darkModeInit() {
       var numberOfDaysToAdd = 30;
       someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
       var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+
+      darkOverlay.classList.add("notransition");
       darkOverlay.style.opacity = 1;
+      darkOverlay.classList.remove("notransition");
     }
   }
 }
