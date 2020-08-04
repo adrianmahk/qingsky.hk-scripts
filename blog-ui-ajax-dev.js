@@ -444,9 +444,13 @@ function darkMode(){
 function darkModeInit() {
   var body = document.body;
   var cookie_value = getCookie("dark-mode");
+
   if (cookie_value != "") {
     if (cookie_value == "1") {
       body.classList.add("dark-mode");
+      var someDate = new Date();
+      var numberOfDaysToAdd = 30;
+      someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
       var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
       darkOverlay.style.opacity = 1;
     }
