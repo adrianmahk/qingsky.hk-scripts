@@ -142,7 +142,7 @@
   var timer;
   function detectAjaxLoad(){
 	if (!document.body.className.match("item-view")){
-      if (!document.body.className.match("archive-view")){
+      if (!document.body.className.match("archive-view") && !document.body.className.match("search-view")){
         var height =  window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
         var current = document.body.scrollTop || document.scrollingElement.scrollTop;
         var next_page_link = document.querySelector('[id*="blog-pager-older-link"]');
@@ -423,12 +423,12 @@ function clearCookie(cookie_key){
  	// if (darkOverlay.style.opacity == 0){
   if (!body.classList.contains("dark-mode")) {
 	 	// darkOverlay.style.visibility = "visible";
-	 	darkOverlay.style.opacity = 1;
     body.classList.add("dark-mode");
+    darkOverlay.style.opacity = 1;
  	}
  	else {
  		// darkOverlay.style.visibility = "hidden";
-	 	darkOverlay.style.opacity = 0;
     body.classList.remove("dark-mode");
+    darkOverlay.style.opacity = 0;
  	}
  }
