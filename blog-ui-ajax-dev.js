@@ -30,7 +30,7 @@
       darkModeInit();
     }
   }
-  
+
   function detectmob() {
    if( navigator.userAgent.match(/Android/i)
    || navigator.userAgent.match(/webOS/i)
@@ -442,10 +442,13 @@ function darkMode(){
   document.cookie = cookie;
 }
 function darkModeInit() {
+  var body = document.body;
   var cookie_value = getCookie("dark-mode");
   if (cookie_value != "") {
-    body.classList.add("dark-mode");
-    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
-    darkOverlay.style.opacity = 1;
+    if (cookie_value == "1") {
+      body.classList.add("dark-mode");
+      var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+      darkOverlay.style.opacity = 1;
+    }
   }
 }
