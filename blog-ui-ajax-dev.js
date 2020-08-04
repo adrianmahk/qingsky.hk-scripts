@@ -443,6 +443,7 @@ function darkMode(){
 }
 function darkModeInit() {
   var body = document.body;
+  var darkOverlay = document.getElementById("dark_mode_overlay");
   var cookie_value = getCookie("dark-mode");
 
   if (cookie_value != "") {
