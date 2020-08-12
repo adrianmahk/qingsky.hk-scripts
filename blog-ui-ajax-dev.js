@@ -306,35 +306,33 @@
     // var post_body =	document.querySelector('[id^="post-body-"]');
     // var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
 
-    var font_size = getCookie("font_size");
-    if (!(font_size in ["f12px", "f14px", "f16px", "f18px"])) {
-      setCookieFontSize("f14px");
+ 
+    var next_font_size = "f16px";
+    // var all_font_sizes = ["f12px", "f14px", "f16px", "f18px"];
+    if (body.classList.contains("f12px")) {
+      next_font_size = "f14px";
+      // body.classList.remove(["f12px", "f16px", "f18px"]);
     }
-    
-    if (font_size=="f12px"){
-      // post_body.style.fontSize =	"14px";
-      body.classList.remove("f12px");
-      body.classList.add("f14px");
-      setCookieFontSize("f14px");
+    else if (body.classList.contains("f14px")) {
+      next_font_size = "f16px";
+      // body.classList.remove(["f12px", "f14px", "f18px"]);
     }
-    else if (font_size=="f14px"){
-      // post_body.style.fontSize =	"16px";
-      body.classList.remove("f14px");
-      body.classList.add("f16px");
-      setCookieFontSize("f16px");
+    else if (body.classList.contains("f16px")) {
+      next_font_size = "f18px";
+      // body.classList.remove(["f12px", "f14px", "f16px"]);
     }
-    else if (font_size=="f16px"){
-      // post_body.style.fontSize =	"18px";
-      body.classList.remove("f16px");
-      body.classList.add("f18px");
-      setCookieFontSize("f18px");
+    else if (body.classList.contains("f18px")) {
+      next_font_size = "f12px";
+      // body.classList.remove(["f14px", "f16px", "f18px"]);
     }
-    else if (font_size=="f18px"){
-      // post_body.style.fontSize =	"12px";
-      body.classList.remove("f18px");
-      body.classList.add("f12px");
-      setCookieFontSize("f12px");
-    }
+  
+    // all_font_sizes.remove(next_font_size);
+    body.classList.remove("f12px");
+    body.classList.remove("f14px");
+    body.classList.remove("f16px");
+    body.classList.remove("f18px");
+    body.classList.add(next_font_size);
+    setCookieFontSize(next_font_size);
   }
   function setCookieFontSize(px){
     var someDate = new Date();
