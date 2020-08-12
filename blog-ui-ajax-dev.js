@@ -28,6 +28,7 @@
   	  getStars2020();
       inited = 1;
       darkModeInit();
+      changeFontSizeInit();
     }
   }
 
@@ -288,36 +289,52 @@
   return "";
   }
   function changeFontSizeInit(){
-    setTimeout(function(){
-      var font_size_cookie = getCookie("font_size");
-      if (font_size_cookie != ""){
-        var post_body =	document.querySelector('[id^="post-body-"]');
-  if (post_body!=null)
-        post_body.style.fontSize =	font_size_cookie;
-      }
-    }, 1000);
-  }
+  		  //alert(&quot;&quot;+document.cookie);
+  		  if (document.body.className.match(&quot;item-view&quot;)){
+      		  var font_size_cookie = getCookie(&quot;font_size&quot;);
+              if (font_size_cookie != &quot;&quot;){
+          			//alert(&quot;&quot;+font_size_cookie);
+                // var post_body =	document.querySelector(&#39;[id^=&quot;post-body-&quot;]&#39;);
+    	      		// post_body.style.fontSize =	font_size_cookie;
+                var body = document.body;
+                body.classList.add(font_size_cookie);
+              }
+            }
+       }
   function changeFontSize(){
-    var post_body =	document.querySelector('[id^="post-body-"]');
-    var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
-    if (font_size=="12px"){
-      post_body.style.fontSize =	"14px";
-      setCookie("14px");
+    var body = document.body;
+    // var post_body =	document.querySelector('[id^="post-body-"]');
+    // var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
+
+	  font_size = "f14px";
+    var font_size = getCookie(&quot;font_size&quot;);    
+    
+    if (font_size=="f12px"){
+      // post_body.style.fontSize =	"14px";
+      body.classList.remove("f12px");
+      body.classList.add("f14px");
+      setCookieFontSize("f14px");
     }
-    if (font_size=="14px"){
-      post_body.style.fontSize =	"16px";
-      setCookie("16px");
+    if (font_size=="f14px"){
+      // post_body.style.fontSize =	"16px";
+      body.classList.remove("f14px");
+      body.classList.add("f16px");
+      setCookieFontSize("f16px");
     }
-    if (font_size=="16px"){
-      post_body.style.fontSize =	"18px";
-      setCookie("18px");
+    if (font_size=="f16px"){
+      // post_body.style.fontSize =	"18px";
+      body.classList.remove("f16px");
+      body.classList.add("f18px");
+      setCookieFontSize("f18px");
     }
-    if (font_size=="18px"){
-      post_body.style.fontSize =	"12px";
-      setCookie("12px");
+    if (font_size=="f18px"){
+      // post_body.style.fontSize =	"12px";
+      body.classList.remove("f18px");
+      body.classList.add("f12px");
+      setCookieFontSize("f12px");
     }
   }
-  function setCookie(px){
+  function setCookieFontSize(px){
     var someDate = new Date();
     var numberOfDaysToAdd = 30;
     someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
@@ -453,10 +470,9 @@ function darkModeInit() {
       var numberOfDaysToAdd = 30;
       someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
       var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
-
-      darkOverlay.classList.add("notransition");
-      darkOverlay.style.opacity = 1;
-      darkOverlay.classList.remove("notransition");
+      // darkOverlay.classList.add("notransition");
+      // darkOverlay.style.opacity = 1;
+      // darkOverlay.classList.remove("notransition");
     }
   }
 }
