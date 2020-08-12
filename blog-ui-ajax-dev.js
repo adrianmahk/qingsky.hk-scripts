@@ -289,12 +289,12 @@
   return "";
   }
   function changeFontSizeInit(){
-  		  //alert(&quot;&quot;+document.cookie);
-  		  if (document.body.className.match(&quot;item-view&quot;)){
-      		  var font_size_cookie = getCookie(&quot;font_size&quot;);
-              if (font_size_cookie != &quot;&quot;){
-          			//alert(&quot;&quot;+font_size_cookie);
-                // var post_body =	document.querySelector(&#39;[id^=&quot;post-body-&quot;]&#39;);
+  		  //alert(""+document.cookie);
+  		  if (document.body.className.match("item-view")){
+      		  var font_size_cookie = getCookie("font_size");
+              if (font_size_cookie != ""){
+          			//alert(""+font_size_cookie);
+                // var post_body =	document.querySelector(&#39;[id^="post-body-"]&#39;);
     	      		// post_body.style.fontSize =	font_size_cookie;
                 var body = document.body;
                 body.classList.add(font_size_cookie);
@@ -307,7 +307,7 @@
     // var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
 
 	  font_size = "f14px";
-    var font_size = getCookie(&quot;font_size&quot;);    
+    var font_size = getCookie("font_size");    
     
     if (font_size=="f12px"){
       // post_body.style.fontSize =	"14px";
@@ -460,7 +460,7 @@ function darkMode(){
 }
 function darkModeInit() {
   var body = document.body;
-  var darkOverlay = document.getElementById("dark_mode_overlay");
+  // var darkOverlay = document.getElementById("dark_mode_overlay");
   var cookie_value = getCookie("dark-mode");
 
   if (cookie_value != "") {
