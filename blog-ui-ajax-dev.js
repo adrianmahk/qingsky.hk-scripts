@@ -306,8 +306,10 @@
     // var post_body =	document.querySelector('[id^="post-body-"]');
     // var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
 
-    var font_size = "f16px";
-    font_size = getCookie("font_size");    
+    var font_size = getCookie("font_size");
+    if (!(font_size in ["f12px", "f14px", "f16px", "f18px"])) {
+      setCookieFontSize("f14px");
+    }
     
     if (font_size=="f12px"){
       // post_body.style.fontSize =	"14px";
@@ -332,9 +334,6 @@
       body.classList.remove("f18px");
       body.classList.add("f12px");
       setCookieFontSize("f12px");
-    }
-    else {
-      setCookieFontSize("f14px");
     }
   }
   function setCookieFontSize(px){
