@@ -306,7 +306,7 @@
     // var post_body =	document.querySelector('[id^="post-body-"]');
     // var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
 
-    var font_size = "f14px";
+    var font_size = "f16px";
     font_size = getCookie("font_size");    
     
     if (font_size=="f12px"){
