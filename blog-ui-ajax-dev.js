@@ -306,8 +306,8 @@
     // var post_body =	document.querySelector('[id^="post-body-"]');
     // var font_size = window.getComputedStyle(post_body, null).getPropertyValue('font-size');
 
-	  font_size = "f14px";
-    var font_size = getCookie("font_size");    
+    var font_size = "f14px";
+    font_size = getCookie("font_size");    
     
     if (font_size=="f12px"){
       // post_body.style.fontSize =	"14px";
@@ -315,23 +315,26 @@
       body.classList.add("f14px");
       setCookieFontSize("f14px");
     }
-    if (font_size=="f14px"){
+    else if (font_size=="f14px"){
       // post_body.style.fontSize =	"16px";
       body.classList.remove("f14px");
       body.classList.add("f16px");
       setCookieFontSize("f16px");
     }
-    if (font_size=="f16px"){
+    else if (font_size=="f16px"){
       // post_body.style.fontSize =	"18px";
       body.classList.remove("f16px");
       body.classList.add("f18px");
       setCookieFontSize("f18px");
     }
-    if (font_size=="f18px"){
+    else if (font_size=="f18px"){
       // post_body.style.fontSize =	"12px";
       body.classList.remove("f18px");
       body.classList.add("f12px");
       setCookieFontSize("f12px");
+    }
+    else {
+      setCookieFontSize("f14px");
     }
   }
   function setCookieFontSize(px){
