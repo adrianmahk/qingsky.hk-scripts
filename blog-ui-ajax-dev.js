@@ -2,6 +2,48 @@
   var inited = 0;
   var loadMainAlready = 0;
   var post_body_content_bak = "";
+  
+  function ready(fn) {
+    if (document.readyState != 'loading') {
+      fn();
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState != 'loading')
+          fn();
+      });
+    }
+  }
+  
+  ready(function() {
+    console.log("inside ready.");
+    makeExternalLinkOpenInBlank();
+    init();
+    console.log("outside ready.");
+  });
+  
+  
+  function makeExternalLinkOpenInBlank() {
+    var website = window.location.hostname;
+    var internalLinkRegex = new RegExp('^((((http:\\/\\/|https:\\/\\/)(www\\.)?)?'
+                                       + website
+                                       + ')|(localhost:\\d{4})|(\\/.*))(\\/.*)?$', '');
+  
+    var anchorEls = document.querySelectorAll('a');
+    var anchorElsLength = anchorEls.length;
+  
+    for (var i = 0; i < anchorElsLength; i++) {
+      var anchorEl = anchorEls[i];
+      var href = anchorEl.getAttribute('href');
+  
+      if (!internalLinkRegex.test(href)) {
+        anchorEl.setAttribute('target', '_blank');
+      }
+    }
+    console.log("ext link in blank.");
+  }
+  
   function init(){
     if (!inited){
       ori = getOrientation_cust();
@@ -27,9 +69,10 @@
   	  getStars();
   	  getStars2020();
       inited = 1;
-      darkModeInit();
-      changeFontSizeInit();
+      //darkModeInit();
+      //changeFontSizeInit();
     }
+    console.log("init");
   }
 
   function detectmob() {
@@ -185,7 +228,7 @@
 			if (time)
 				ajax_times = time;
             var ajax_main = ajax_html.substring(main_start_pos, main_end_pos);
-			ajax_main = "<a name='ajax"+ajax_times+"'></a><ajax id='ajax"+ajax_times+"'>"+ajax_main+"</ajax>";
+			ajax_main = "<a name='ajax"+ajax_times+"'></a>"+ajax_main;
             var main = document.getElementById("main");
 			main.insertAdjacentHTML('beforeend',ajax_main);
 			//post_body_content_bak += ajax_main;
