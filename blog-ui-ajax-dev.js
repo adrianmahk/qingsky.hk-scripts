@@ -41,7 +41,7 @@
         anchorEl.setAttribute('target', '_blank');
       }
     }
-    console.log("ext link in blank.");
+    //console.log("ext link in blank.");
   }
   
   function init(){
@@ -451,6 +451,9 @@ function getStarsYear() {
 	 }
 	 
 	 var starDiv = document.getElementById('star-year');
+   if (!starDiv) {
+     	 starDiv = document.getElementById('star-2020');
+   }
 	 if (starDiv){
 	 	starDiv.innerHTML = str;
 	 }
