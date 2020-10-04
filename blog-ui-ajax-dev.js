@@ -422,7 +422,7 @@ function setStarsYear(star){
 	  var someDate = new Date(year+1,0,1,0,0,0,0);
 	  var cookie = "star-year=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
 	  document.cookie = (cookie);
-	  alert(cookie);
+	  //alert(cookie);
 }
 
 function getStarsYear() {
