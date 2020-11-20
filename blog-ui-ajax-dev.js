@@ -26,9 +26,20 @@
   
   function makeExternalLinkOpenInBlank() {
     var website = window.location.hostname;
-    var internalLinkRegex = new RegExp('^((((http:\\/\\/|https:\\/\\/)(www\\.)?)?'
-                                       + website
-                                       + ')|(localhost:\\d{4})|(\\/.*))(\\/.*)?$', '');
+    var internalLinkRegex = new RegExp(
+      '^('+
+          '('+
+              '('+
+                  '(http:\\/\\/|https:\\/\\/)(www\\.)'+
+              '?)'+
+              '?' + website +
+          ')'+
+      '|'+
+      '(localhost:\\d{4})|(\\/.*))'+
+      '(\\/.*)?$'+
+      '|'+
+      'javascript:'
+      , '');
   
     var anchorEls = document.querySelectorAll('a');
     var anchorElsLength = anchorEls.length;
