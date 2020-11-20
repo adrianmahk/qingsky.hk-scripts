@@ -480,6 +480,7 @@ function getStarsYear() {
 }
 
 function retryStarsYear(){
+  clearCookie('star-2020');
 	clearCookie('star-year');
 	var retryTimes = getCookie('star-year-retry');
 	if (retryTimes == '') {
