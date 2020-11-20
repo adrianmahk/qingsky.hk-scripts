@@ -26,9 +26,20 @@
   
   function makeExternalLinkOpenInBlank() {
     var website = window.location.hostname;
-    var internalLinkRegex = new RegExp('^((((http:\\/\\/|https:\\/\\/)(www\\.)?)?'
-                                       + website
-                                       + ')|(localhost:\\d{4})|(\\/.*))(\\/.*)?$', '');
+    var internalLinkRegex = new RegExp(
+      '^('+
+          '('+
+              '('+
+                  '(http:\\/\\/|https:\\/\\/)(www\\.)'+
+              '?)'+
+              '?' + website +
+          ')'+
+      '|'+
+      '(localhost:\\d{4})|(\\/.*))'+
+      '(\\/.*)?$'+
+      '|'+
+      'javascript:'
+      , '');
   
     var anchorEls = document.querySelectorAll('a');
     var anchorElsLength = anchorEls.length;
@@ -381,7 +392,7 @@
     var someDate = new Date();
     var numberOfDaysToAdd = 30;
     someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-    var str = "font_size=" + px +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+    var str = "font_size=" + px +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
     document.cookie = str;
   }
       
@@ -394,7 +405,7 @@ function getStars() {
    //var timeZone = -(someDate.getTimezoneOffset() / 60);
    someDate.setHours(0, 0, 0);
    someDate.setDate(someDate.getDate() + 1);
-     var cookie = "star_today=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+     var cookie = "star_today=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
      document.cookie = (cookie);
      //alert(cookie);
  }
@@ -420,7 +431,7 @@ function setStarsYear(star){
     var d = new Date();
     var year = d.getFullYear();
 	  var someDate = new Date(year+1,0,1,0,0,0,0);
-	  var cookie = "star-year=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+	  var cookie = "star-year=" + star +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
 	  document.cookie = (cookie);
 	  //alert(cookie);
 }
@@ -469,6 +480,7 @@ function getStarsYear() {
 }
 
 function retryStarsYear(){
+  clearCookie('star-2020');
 	clearCookie('star-year');
 	var retryTimes = getCookie('star-year-retry');
 	if (retryTimes == '') {
@@ -478,7 +490,7 @@ function retryStarsYear(){
     var d = new Date();
     var year = d.getFullYear();
     var someDate = new Date(year+1,0,1,0,0,0,0);
-  	var cookie =  "star-year-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+  	var cookie =  "star-year-retry=" + retryTimes +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
     document.cookie = (cookie);
 	
 	getStarsYear();
@@ -486,7 +498,7 @@ function retryStarsYear(){
 	
 function clearCookie(cookie_key){
 	var someDate = new Date(0);
-	var cookie =  cookie_key + "=" + 0 +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+	var cookie =  cookie_key + "=" + 0 +"; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
     document.cookie = (cookie);
 }
 
@@ -504,13 +516,13 @@ function darkMode(){
   if (!body.classList.contains("dark-mode")) {
    	// darkOverlay.style.visibility = "visible";
     body.classList.add("dark-mode");
-    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+    var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
     darkOverlay.style.opacity = 1;
   	}
 	else {
 		// darkOverlay.style.visibility = "hidden";
     body.classList.remove("dark-mode");
-    var cookie =  "dark-mode=0; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+    var cookie =  "dark-mode=0; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
     darkOverlay.style.opacity = 0;
 	}
   document.cookie = cookie;
@@ -525,7 +537,7 @@ function darkModeInit() {
       var someDate = new Date();
       var numberOfDaysToAdd = 30;
       someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-      var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=strict";
+      var cookie =  "dark-mode=1; expires=" +someDate.toUTCString()+ "; path=/; samesite=lax";
     }
   }
 }
