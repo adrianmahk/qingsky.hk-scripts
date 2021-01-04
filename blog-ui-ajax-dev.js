@@ -285,7 +285,7 @@
 		//alert(&quot;loading!&quot;);
 		event.preventDefault();
 		event.stopPropagation();
-		ajaxLoad2(href, removeFirst);
+		ajaxLoad(href, removeFirst);
 		//return false;
 	}
   
