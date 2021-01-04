@@ -226,35 +226,68 @@
     }
   }
 
-  function ajaxLoad(link, time) {
-    //saveMain();
+  function ajaxLoad(link, removeFirst=false) {
+	//alert(&#39;override!&#39;);
     var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
+      if (this.readyState == 4 &amp;&amp; this.status == 200) {
         var ajax_html = this.responseText;
-        var main_start_pos = ajax_html.indexOf("<ma"+"in")+ 66;
-        var main_end_pos = ajax_html.indexOf("</ma"+"in>") -1 ;
-        if ((main_start_pos > 22) && (main_end_pos > 50)){
+		var ajax_doc = new DOMParser().parseFromString(ajax_html, &quot;text/html&quot;);
+
+		var ajax_main = ajax_doc.getElementById(&quot;main&quot;);		
+		var ajax_blog = ajax_doc.getElementById(&quot;main&quot;);
+		var ajax_articles = ajax_blog.getElementsByTagName(&quot;article&quot;);
+		if (removeFirst) {
+			if (ajax_articles.length &gt; 1) {
+				ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
+			}
+		}
+		
+		if (ajax_blog) {
 			ajax_times++;
-			if (time)
-				ajax_times = time;
-            var ajax_main = ajax_html.substring(main_start_pos, main_end_pos);
-			ajax_main = "<a name='ajax"+ajax_times+"'></a>"+ajax_main;
-            var main = document.getElementById("main");
-			main.insertAdjacentHTML('beforeend',ajax_main);
-			//post_body_content_bak += ajax_main;
-			removeAllButLast('[id*=blog-pager-older-link]');
-			removeAllButLast('[id=blog-pager]');
+            var main = document.getElementById(&quot;main&quot;);
+			//main.appendChild(ajax_main);
+			main.insertAdjacentHTML(&#39;beforeend&#39;,ajax_main.innerHTML);
+			
+			removeAllButLast(&#39;[id*=blog-pager-older-link]&#39;);
+			removeAllButLast(&#39;[id=blog-pager]&#39;);
 			clearTimeout(timer);
         }
       }
 	};
 	if (link){
-	  var real_link = link.substring( link.indexOf("search"));
-	  xhttp.open("GET", real_link, true);
+	  var real_link = link.substring( link.indexOf(&quot;search&quot;));
+	  xhttp.open(&quot;GET&quot;, real_link, true);
       xhttp.send();
 	}
   }
+  
+  function getLatestArchiveMonthLink(nextPageLink){
+    var searchParams = nextPageLink.substr(nextPageLink.indexOf(&#39;?&#39;));
+	var urlParams = new URLSearchParams(searchParams);
+
+	var updatedMax = new Date(urlParams.get(&quot;updated-max&quot;));
+    if (updatedMax) {
+        var year = updatedMax.getFullYear();
+    	var month = updatedMax.getMonth();
+		month++; //to compromise the getMonth return 0 - 11
+        // if (month == 0) {
+		// 	year--;
+        //     month = 12;
+        // }
+		var archiveUrl = window.location.origin + &#39;/&#39; + year + ((month &lt; 10) ? &#39;/0&#39; : &#39;/&#39;) + month + &#39;/&#39;;
+    	console.log(archiveUrl);
+		
+		return archiveUrl;
+    }
+  }
+	function loadLinkPreventDefault(event, href, removeFirst=false) {
+		//alert(&quot;loading!&quot;);
+		event.preventDefault();
+		event.stopPropagation();
+		ajaxLoad2(href, removeFirst);
+		//return false;
+	}
   
   function checkNeedRefresh() {
 	var last_update = sessionStorage.getItem("last-update");
