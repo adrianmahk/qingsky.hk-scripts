@@ -226,23 +226,28 @@
     }
   }
 
-  function ajaxLoad(link, time) {
-    //saveMain();
+  function ajaxLoad(link, removeFirst=false) {
     var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var ajax_html = this.responseText;
-        var main_start_pos = ajax_html.indexOf("<ma"+"in")+ 66;
-        var main_end_pos = ajax_html.indexOf("</ma"+"in>") -1 ;
-        if ((main_start_pos > 22) && (main_end_pos > 50)){
+		var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
+
+		var ajax_main = ajax_doc.getElementById("main");		
+		var ajax_blog = ajax_doc.getElementById("main");
+		var ajax_articles = ajax_blog.getElementsByTagName("article");
+		if (removeFirst) {
+			if (ajax_articles.length > 1) {
+				ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
+			}
+		}
+		
+		if (ajax_blog) {
 			ajax_times++;
-			if (time)
-				ajax_times = time;
-            var ajax_main = ajax_html.substring(main_start_pos, main_end_pos);
-			ajax_main = "<a name='ajax"+ajax_times+"'></a>"+ajax_main;
             var main = document.getElementById("main");
-			main.insertAdjacentHTML('beforeend',ajax_main);
-			//post_body_content_bak += ajax_main;
+			//main.appendChild(ajax_main);
+			main.insertAdjacentHTML('beforeend',ajax_main.innerHTML);
+			
 			removeAllButLast('[id*=blog-pager-older-link]');
 			removeAllButLast('[id=blog-pager]');
 			clearTimeout(timer);
@@ -255,6 +260,31 @@
       xhttp.send();
 	}
   }
+  
+  function getLatestArchiveMonthLink(nextPageLink){
+    var searchParams = nextPageLink.substr(nextPageLink.indexOf('?'));
+	var urlParams = new URLSearchParams(searchParams);
+
+	var updatedMax = new Date(urlParams.get("updated-max"));
+    if (updatedMax) {
+        var year = updatedMax.getFullYear();
+    	var month = updatedMax.getMonth();
+		month++; //to compromise the getMonth return 0 - 11
+        // if (month == 0) {
+		// 	year--;
+        //     month = 12;
+        // }
+		var archiveUrl = window.location.origin + '/' + year + ((month < 10) ? '/0' : '/') + month + '/';
+    	console.log(archiveUrl);
+		
+		return archiveUrl;
+    }
+  }
+	function loadLinkPreventDefault(event, href, removeFirst=false) {
+		event.preventDefault();
+		event.stopPropagation();
+		ajaxLoad(href, removeFirst);
+	}
   
   function checkNeedRefresh() {
 	var last_update = sessionStorage.getItem("last-update");
@@ -348,7 +378,7 @@
       		  var font_size_cookie = getCookie("font_size");
               if (font_size_cookie != ""){
           			//alert(""+font_size_cookie);
-                // var post_body =	document.querySelector(&#39;[id^="post-body-"]&#39;);
+                // var post_body =	document.querySelector('[id^="post-body-"]');
     	      		// post_body.style.fontSize =	font_size_cookie;
                 var body = document.body;
                 body.classList.add(font_size_cookie);
