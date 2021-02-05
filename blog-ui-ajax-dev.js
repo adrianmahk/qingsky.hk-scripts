@@ -226,39 +226,67 @@
     }
   }
 
-  function ajaxLoad(link, removeFirst=false) {
+  function ajaxLoad(link, removeFirst=false, button=null) {
     var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var ajax_html = this.responseText;
-		var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
+        var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
 
-		var ajax_main = ajax_doc.getElementById("main");		
-		var ajax_blog = ajax_doc.getElementById("main");
-		var ajax_articles = ajax_blog.getElementsByTagName("article");
-		if (removeFirst) {
-			if (ajax_articles.length > 1) {
-				ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
-			}
-		}
+        var ajax_main = ajax_doc.getElementById("main");		
+        var ajax_blog = ajax_doc.getElementById("main");
+        var ajax_articles = ajax_blog.getElementsByTagName("article");
+        if (removeFirst) {
+          if (ajax_articles.length > 1) {
+            ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
+          }
+        }
 		
-		if (ajax_blog) {
-			ajax_times++;
-            var main = document.getElementById("main");
-			//main.appendChild(ajax_main);
-			main.insertAdjacentHTML('beforeend',ajax_main.innerHTML);
-			
-			removeAllButLast('[id*=blog-pager-older-link]');
-			removeAllButLast('[id=blog-pager]');
-			clearTimeout(timer);
+        if (ajax_blog) {
+          ajax_times++;
+                var main = document.getElementById("main");
+          //main.appendChild(ajax_main);
+          main.insertAdjacentHTML('beforeend',ajax_main.innerHTML);
+          
+          removeAllButLast('[id*=blog-pager-older-link]');
+          removeAllButLast('[id=blog-pager]');
+          clearTimeout(timer);
         }
       }
-	};
-	if (link){
-	  var real_link = link.substring( link.indexOf("search"));
-	  xhttp.open("GET", real_link, true);
-      xhttp.send();
-	}
+    };
+    if (link){
+      // var real_link = link.substring( link.indexOf("search"));
+      
+      // // var url = new URL(link);
+      // // console.log(url.protocol+"//"+url.hostname);
+      // // console.log(str.replace(url.protocol+"//"+url.hostname, ""));
+      // // var real_link = str.replace(url.protocol+"//"+url.hostname, "");
+      
+      // xhttp.open("GET", real_link, true);
+      // xhttp.send();
+      var tempMoreMsg = "更多文章";
+      if (button) {
+        tempMoreMsg = button.innerHTML;
+        button.innerHTML = "載入中…";
+        button.style["pointer-events"] = "none";
+      }
+      var url = new URL(link);
+      console.log(url.protocol+"//"+url.hostname);
+      console.log(link.replace(url.protocol+"//"+url.hostname, ""));
+      var real_link = link.replace(url.protocol+"//"+url.hostname, "");
+      console.log(real_link);
+      //xhttp.open("GET", real_link, true);
+      //xhttp.send();
+
+      setTimeout(function(){
+        timer = setTimeout(function(){
+          if (button) {
+            button.innerHTML = tempMoreMsg;
+            button.style["pointer-events"] = "all";
+          }
+        }, 5000);
+      }, 1000);
+    }
   }
   
   function getLatestArchiveMonthLink(nextPageLink){
@@ -267,9 +295,9 @@
 
 	var updatedMax = new Date(urlParams.get("updated-max"));
     if (updatedMax) {
-        var year = updatedMax.getFullYear();
+      var year = updatedMax.getFullYear();
     	var month = updatedMax.getMonth();
-		month++; //to compromise the getMonth return 0 - 11
+		  month++; //to compromise the getMonth return 0 - 11
         // if (month == 0) {
 		// 	year--;
         //     month = 12;
@@ -280,10 +308,10 @@
 		return archiveUrl;
     }
   }
-	function loadLinkPreventDefault(event, href, removeFirst=false) {
+	function loadLinkPreventDefault(event, href, removeFirst=false, button=null) {
 		event.preventDefault();
 		event.stopPropagation();
-		ajaxLoad(href, removeFirst);
+		ajaxLoad(href, removeFirst, button);
 	}
   
   function checkNeedRefresh() {
