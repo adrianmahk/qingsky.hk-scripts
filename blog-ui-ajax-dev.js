@@ -275,8 +275,8 @@
       console.log(link.replace(url.protocol+"//"+url.hostname, ""));
       var real_link = link.replace(url.protocol+"//"+url.hostname, "");
       console.log(real_link);
-      //xhttp.open("GET", real_link, true);
-      //xhttp.send();
+      xhttp.open("GET", real_link, true);
+      xhttp.send();
 
       setTimeout(function(){
         timer = setTimeout(function(){
