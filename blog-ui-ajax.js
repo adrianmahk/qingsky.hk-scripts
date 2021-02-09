@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210205001
+// blog-ui-ajax.js 20210209001
 var inited = 0;
 var loadMainAlready = 0;
 var post_body_content_bak = "";
@@ -214,6 +214,11 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       if (removeFirst) {
         if (ajax_articles.length > 1) {
           ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
+        }
+        else if (ajax_articles.length == 1) {
+            var next_link = ajax_doc.getElementById('blog-pager-older-link');
+            ajaxLoad(next_link.href);
+            return;
         }
       }
 
@@ -546,3 +551,4 @@ function darkModeInit() {
     }
   }
 }
+
