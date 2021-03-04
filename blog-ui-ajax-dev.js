@@ -49,6 +49,10 @@ function makeExternalLinkOpenInBlank() {
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
+    else {
+      anchorEl.setAttribute('href', 'javascript:ajaxGoToLink("'+href+'")');
+      console.log(anchorEl);
+    }
   }
 }
 
@@ -232,6 +236,8 @@ function ajaxLoad(link, removeFirst = false, button = null) {
         removeAllButLast('[id=blog-pager]');
         clearTimeout(timer);
       }
+
+      makeExternalLinkOpenInBlank();
     }
   };
   if (link) {
@@ -241,11 +247,12 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       button.innerHTML = "載入中…";
       button.style["pointer-events"] = "none";
     }
-    var url = new URL(link);
-    console.log(url.protocol + "//" + url.hostname);
-    console.log(link.replace(url.protocol + "//" + url.hostname, ""));
-    var real_link = link.replace(url.protocol + "//" + url.hostname, "");
-    console.log(real_link);
+    // var url = new URL(link);
+    // console.log(url.protocol + "//" + url.hostname);
+    // console.log(link.replace(url.protocol + "//" + url.hostname, ""));
+    // var real_link = link.replace(url.protocol + "//" + url.hostname, "");
+    // console.log(real_link);
+    var real_link = link;
     xhttp.open("GET", real_link, true);
     xhttp.send();
 
