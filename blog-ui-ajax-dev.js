@@ -38,7 +38,7 @@ function makeExternalLinkOpenInBlank() {
     '|' +
     'javascript:'
     , '');
-  // var jsCheck = new RegExp('^(javascript:)', '');
+  var jsCheck = new RegExp('^(javascript:)', '');
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
@@ -50,12 +50,12 @@ function makeExternalLinkOpenInBlank() {
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
-    // else if (!jsCheck.test(href)) {
-    //   if (!anchorEl.getAttribute('onclick')) {
-    //     anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
-    //   }
-    //   console.log(anchorEl);
-    // }
+    else if (!jsCheck.test(href)) {
+      if (!anchorEl.getAttribute('onclick')) {
+        anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+      }
+      console.log(anchorEl);
+    }
   }
 }
 
