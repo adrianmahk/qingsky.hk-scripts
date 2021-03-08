@@ -50,12 +50,13 @@ function makeExternalLinkOpenInBlank() {
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
-    // else if (!jsCheck.test(href)) {
-    //   if (!anchorEl.getAttribute('onclick')) {
-    //     anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
-    //   }
-    //   console.log(anchorEl);
-    // }
+    else if (!jsCheck.test(href)) {
+      if (!anchorEl.getAttribute('onclick')) {
+        // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+        anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
+      }
+      console.log(anchorEl);
+    }
   }
 }
 
@@ -79,6 +80,8 @@ function init() {
       } else {
         setFlag();
       }
+      
+      document.body.classList.remove("page-loading");
     });
     loadIndie();
     getStars();
