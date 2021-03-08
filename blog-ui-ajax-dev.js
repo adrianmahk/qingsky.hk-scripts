@@ -80,10 +80,10 @@ function init() {
       } else {
         setFlag();
       }
-    });
-    window.addEventListener("unload", function () {
+      
       document.body.classList.remove("page-loading");
     });
+    
     loadIndie();
     getStars();
     getStarsYear();
