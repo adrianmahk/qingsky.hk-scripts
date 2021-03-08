@@ -38,7 +38,7 @@ function makeExternalLinkOpenInBlank() {
     '|' +
     'javascript:'
     , '');
-  // var jsCheck = new RegExp('^(javascript:)', '');
+  var jsCheck = new RegExp('^(javascript:)', '');
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
