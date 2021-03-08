@@ -54,8 +54,8 @@ function makeExternalLinkOpenInBlank() {
       if (!anchorEl.getAttribute('onclick')) {
         // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
         anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
+        console.log(anchorEl);
       }
-      console.log(anchorEl);
     }
   }
 }
@@ -80,7 +80,8 @@ function init() {
       } else {
         setFlag();
       }
-      
+    });
+    window.addEventListener("unload", function () {
       document.body.classList.remove("page-loading");
     });
     loadIndie();
