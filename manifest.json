@@ -16,7 +16,8 @@
     "platform": "web"
   }
   ],
-  "start_url": "/",
+  "start_url": "./",
+  "scope": ".",
   "display": "standalone",
   "theme_color": "#0aa89e",
   "background_color": "#fefdf3",
