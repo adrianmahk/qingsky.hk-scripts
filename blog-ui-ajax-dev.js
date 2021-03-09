@@ -51,7 +51,7 @@ function makeExternalLinkOpenInBlank() {
       anchorEl.setAttribute('target', '_blank');
     }
     else if (!jsCheck.test(href)) {
-      if (!anchorEl.getAttribute('onclick')) {
+      if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
         // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
         anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
         console.log(anchorEl);
