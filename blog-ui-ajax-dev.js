@@ -38,7 +38,7 @@ function makeExternalLinkOpenInBlank() {
     '|' +
     'javascript:'
     , '');
-  var jsCheck = new RegExp('^(javascript:)', '');
+  // var jsCheck = new RegExp('^(javascript:)', '');
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
@@ -50,13 +50,13 @@ function makeExternalLinkOpenInBlank() {
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
-    else if (!jsCheck.test(href)) {
-      if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
-        // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
-        anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
-        console.log(anchorEl);
-      }
-    }
+    // else if (!jsCheck.test(href)) {
+    //   if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
+    //     // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+    //     anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
+    //     console.log(anchorEl);
+    //   }
+    // }
   }
 }
 
@@ -81,7 +81,7 @@ function init() {
         setFlag();
       }
       
-      document.body.classList.remove("page-loading");
+      // document.body.classList.remove("page-loading");
     });
     
     loadIndie();
@@ -126,8 +126,8 @@ function noBlur(element) {
   element.setAttribute("style", "box-shadow: none;");
 }
 function drawButtonsShadow() {
-  overflown_obj = document.getElementById('overflowable-container');
-  blur_obj = document.getElementById('overflowable-container-shadow');
+  overflown_obj = document.getElementById('label-container');
+  blur_obj = document.getElementById('label-container-shadow');
   if (isOverflown(overflown_obj)) {
     var x = overflown_obj.scrollLeft;
     var ul = overflown_obj.scrollWidth - overflown_obj.clientWidth;
