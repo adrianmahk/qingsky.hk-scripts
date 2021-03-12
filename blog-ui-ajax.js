@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210209001
+// blog-ui-ajax.js 20210312001
 var inited = 0;
 var loadMainAlready = 0;
 var post_body_content_bak = "";
@@ -38,6 +38,7 @@ function makeExternalLinkOpenInBlank() {
     '|' +
     'javascript:'
     , '');
+  // var jsCheck = new RegExp('^(javascript:)', '');
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
@@ -49,6 +50,13 @@ function makeExternalLinkOpenInBlank() {
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
+    // else if (!jsCheck.test(href)) {
+    //   if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
+    //     // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+    //     anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
+    //     console.log(anchorEl);
+    //   }
+    // }
   }
 }
 
@@ -72,7 +80,10 @@ function init() {
       } else {
         setFlag();
       }
+      
+      // document.body.classList.remove("page-loading");
     });
+    
     loadIndie();
     getStars();
     getStarsYear();
@@ -115,8 +126,8 @@ function noBlur(element) {
   element.setAttribute("style", "box-shadow: none;");
 }
 function drawButtonsShadow() {
-  overflown_obj = document.getElementById('overflowable-container');
-  blur_obj = document.getElementById('overflowable-container-shadow');
+  overflown_obj = document.getElementById('label-container');
+  blur_obj = document.getElementById('label-container-shadow');
   if (isOverflown(overflown_obj)) {
     var x = overflown_obj.scrollLeft;
     var ul = overflown_obj.scrollWidth - overflown_obj.clientWidth;
@@ -232,6 +243,8 @@ function ajaxLoad(link, removeFirst = false, button = null) {
         removeAllButLast('[id=blog-pager]');
         clearTimeout(timer);
       }
+
+      makeExternalLinkOpenInBlank();
     }
   };
   if (link) {
@@ -241,11 +254,12 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       button.innerHTML = "載入中…";
       button.style["pointer-events"] = "none";
     }
-    var url = new URL(link);
-    console.log(url.protocol + "//" + url.hostname);
-    console.log(link.replace(url.protocol + "//" + url.hostname, ""));
-    var real_link = link.replace(url.protocol + "//" + url.hostname, "");
-    console.log(real_link);
+    // var url = new URL(link);
+    // console.log(url.protocol + "//" + url.hostname);
+    // console.log(link.replace(url.protocol + "//" + url.hostname, ""));
+    // var real_link = link.replace(url.protocol + "//" + url.hostname, "");
+    // console.log(real_link);
+    var real_link = link;
     xhttp.open("GET", real_link, true);
     xhttp.send();
 
