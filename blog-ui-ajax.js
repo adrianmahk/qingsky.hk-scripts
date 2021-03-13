@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210312001
+// blog-ui-ajax.js 20210313001
 var inited = 0;
 var loadMainAlready = 0;
 var post_body_content_bak = "";
@@ -19,7 +19,20 @@ function ready(fn) {
 ready(function () {
   makeExternalLinkOpenInBlank();
   init();
+  fixDropboxImgSrc();
 });
+
+function fixDropboxImgSrc() {
+  var imgEls = document.querySelectorAll('img');
+  for (var i = 0; i < imgEls.length; i++) {
+      var src = imgEls[i].getAttribute("src");
+      if (src.includes("www.dropbox.com")) {
+          var newSrc = src.replace("www.dropbox.com", "dl.dropboxusercontent.com");
+          imgEls[i].setAttribute("src", newSrc);
+          console.log(imgEls[i]);
+      }
+  }
+}
 
 
 function makeExternalLinkOpenInBlank() {
