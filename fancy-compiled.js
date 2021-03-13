@@ -4280,7 +4280,8 @@
     };
     var mh = function() {
         var a = document.createElement("img");
-        a.src = "https://lh3.googleusercontent.com/zFdxGE77vvD2w5xHy6jkVuElKv-U9_9qLkRYK8OnbDeJPtjSZ82UPq5w6hJ-SA=w35";
+        //a.src = "https://lh3.googleusercontent.com/zFdxGE77vvD2w5xHy6jkVuElKv-U9_9qLkRYK8OnbDeJPtjSZ82UPq5w6hJ-SA=w35";
+        a.src = "";
         L.add(a, "blogger-icon");
         return new lh(a, /(?:https?:)?\/\/img[12]\.blogblog\.com\/img\/b16-rounded\.gif/)
     };
