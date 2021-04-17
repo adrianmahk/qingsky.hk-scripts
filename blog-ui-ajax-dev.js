@@ -404,10 +404,14 @@ function getCookie(cname) {
 }
 function changeFontSizeInit() {
   if (document.body.className.match("item-view")) {
-    var font_size_cookie = getCookie("font_size") || getCookie("font-size");
+    var font_size_cookie = getCookie("font-size");
+    if (font_size_cookie == "") {
+      font_size_cookie = getCookie("font_size");
+    }
     if (font_size_cookie != "") {
       var body = document.body;
       body.classList.add(font_size_cookie);
+      writeCookie("font-size", font_size_cookie);
     }
   }
 }
@@ -550,7 +554,6 @@ function clearCookie(cookie_key) {
 
 function writeCookie(key, value, days=30) {
   var someDate = new Date();
-  //var days = 30;
   someDate.setDate(someDate.getDate() + days);
 
   var cookie = key + "=" + value + "; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";  
@@ -564,22 +567,14 @@ function darkMode() {
     darkOverlay = document.getElementById("dark-mode-overlay");
   }
 
-  //var someDate = new Date();
-  //var numberOfDaysToAdd = 30;
-  //someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
   if (!body.classList.contains("dark-mode")) {
     body.classList.add("dark-mode");
     writeCookie("dark-mode", 1);
-    //var cookie = "dark-mode=1; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
-    //darkOverlay.style.opacity = 1;
   }
   else {
     body.classList.remove("dark-mode");
     clearCookie("dark-mode");
-    //var cookie = "dark-mode=0; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
-    //darkOverlay.style.opacity = 0;
   }
-  //document.cookie = cookie;
 }
 function darkModeInit() {
   var body = document.body;
@@ -592,7 +587,6 @@ function darkModeInit() {
     if (cookie_value == "1") {
       body.classList.add("dark-mode");
       writeCookie("dark-mode", 1);
-      //var cookie = "dark-mode=1; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
     }
   }
   else {
