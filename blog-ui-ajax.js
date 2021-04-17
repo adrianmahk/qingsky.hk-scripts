@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210313001
+// blog-ui-ajax.js 20210418001 writeCookie,pageShowEvent,cleanups
 var inited = 0;
 var loadMainAlready = 0;
 var post_body_content_bak = "";
@@ -92,11 +92,16 @@ function init() {
         saveScrollPos();
       } else {
         setFlag();
-      }
-      
+      }  
       // document.body.classList.remove("page-loading");
     });
     
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        darkModeInit();
+        changeFontSizeInit();
+      }
+    });
     loadIndie();
     getStars();
     getStarsYear();
@@ -399,10 +404,14 @@ function getCookie(cname) {
 }
 function changeFontSizeInit() {
   if (document.body.className.match("item-view")) {
-    var font_size_cookie = getCookie("font_size");
+    var font_size_cookie = getCookie("font-size");
+    if (font_size_cookie == "") {
+      font_size_cookie = getCookie("font_size");
+    }
     if (font_size_cookie != "") {
       var body = document.body;
       body.classList.add(font_size_cookie);
+      writeCookie("font-size", font_size_cookie);
     }
   }
 }
@@ -431,11 +440,12 @@ function changeFontSize() {
   setCookieFontSize(next_font_size);
 }
 function setCookieFontSize(px) {
-  var someDate = new Date();
-  var numberOfDaysToAdd = 30;
-  someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-  var str = "font_size=" + px + "; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
-  document.cookie = str;
+  //var someDate = new Date();
+  //var numberOfDaysToAdd = 30;
+  //someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
+  //var str = "font_size=" + px + "; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
+  //document.cookie = str;
+  writeCookie("font-size", px);
 }
 
 
@@ -542,6 +552,14 @@ function clearCookie(cookie_key) {
   document.cookie = (cookie);
 }
 
+function writeCookie(key, value, days=30) {
+  var someDate = new Date();
+  someDate.setDate(someDate.getDate() + days);
+
+  var cookie = key + "=" + value + "; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";  
+  document.cookie = (cookie);
+}
+
 function darkMode() {
   var body = document.body;
   var darkOverlay = document.getElementById("dark_mode_overlay");
@@ -549,33 +567,31 @@ function darkMode() {
     darkOverlay = document.getElementById("dark-mode-overlay");
   }
 
-  var someDate = new Date();
-  var numberOfDaysToAdd = 30;
-  someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
   if (!body.classList.contains("dark-mode")) {
     body.classList.add("dark-mode");
-    var cookie = "dark-mode=1; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
-    darkOverlay.style.opacity = 1;
+    writeCookie("dark-mode", 1);
   }
   else {
     body.classList.remove("dark-mode");
-    var cookie = "dark-mode=0; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
-    darkOverlay.style.opacity = 0;
+    clearCookie("dark-mode");
   }
-  document.cookie = cookie;
 }
 function darkModeInit() {
   var body = document.body;
   var cookie_value = getCookie("dark-mode");
+  var someDate = new Date();
+  var numberOfDaysToAdd = 30;
+  someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
 
   if (cookie_value != "") {
     if (cookie_value == "1") {
       body.classList.add("dark-mode");
-      var someDate = new Date();
-      var numberOfDaysToAdd = 30;
-      someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-      var cookie = "dark-mode=1; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
+      writeCookie("dark-mode", 1);
     }
+  }
+  else {
+    body.classList.remove("dark-mode");
+    clearCookie("dark-mode");
   }
 }
 
