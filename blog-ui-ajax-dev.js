@@ -59,10 +59,11 @@ function makeExternalLinkOpenInBlank() {
   for (var i = 0; i < anchorElsLength; i++) {
     var anchorEl = anchorEls[i];
     var href = anchorEl.getAttribute('href');
-
-    if (!internalLinkRegex.test(href)) {
-      anchorEl.setAttribute('target', '_blank');
-    }
+    if (href){
+      if (!internalLinkRegex.test(href)) {
+        anchorEl.setAttribute('target', '_blank');
+      }
+    }    
     // else if (!jsCheck.test(href)) {
     //   if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
     //     // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
