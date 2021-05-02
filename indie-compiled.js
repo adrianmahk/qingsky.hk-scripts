@@ -6146,7 +6146,7 @@ function loadIndie(){
         },
         pj = function(a, b) {
             if (b && "undefined" !== typeof Clipboard && Clipboard) {
-                var c = new Clipboard(b, {
+                var c = new ClipboardJs(b, {
                         text: function(a) {
                             return a.getAttribute("data-url")
                         }
