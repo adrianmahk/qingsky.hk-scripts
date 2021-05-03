@@ -20,7 +20,6 @@ ready(function () {
   makeExternalLinkOpenInBlank();
   init();
   fixDropboxImgSrc();
-  showPopupMessage();
 });
 
 function fixDropboxImgSrc() {
