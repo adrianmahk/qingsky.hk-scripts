@@ -20,6 +20,7 @@ ready(function () {
   makeExternalLinkOpenInBlank();
   init();
   fixDropboxImgSrc();
+  showPopupMessage();
 });
 
 function fixDropboxImgSrc() {
@@ -556,6 +557,7 @@ function clearCookie(cookie_key) {
 function writeCookie(key, value, days=30) {
   var someDate = new Date();
   someDate.setDate(someDate.getDate() + days);
+  someDate.setHours(0,0,0,0);
 
   var cookie = key + "=" + value + "; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";  
   document.cookie = (cookie);
@@ -595,4 +597,3 @@ function darkModeInit() {
     clearCookie("dark-mode");
   }
 }
-
