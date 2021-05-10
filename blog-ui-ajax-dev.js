@@ -178,7 +178,7 @@ function setResizeListener() {
     var ori = getOrientation();
     if (ori != ori_old) {
       document.body.setAttribute("orientation", ori);
-      setTimeout(onOrientationChange, 20);
+      //setTimeout(onOrientationChange, 20);
     }
     drawButtonsShadow();
   });
