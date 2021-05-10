@@ -3,6 +3,7 @@
 //var loadMainAlready = 0;
 // var post_body_content_bak = "";
 var timer = 0;
+// var ori;
 
 
 function ready(fn) {
@@ -78,7 +79,7 @@ function makeExternalLinkOpenInBlank() {
 
 function init() {
   if (!document.body.getAttribute("inited")) {
-    ori = getOrientation_cust();
+    document.body.setAttribute("orientation", getOrientation());
     if (detectmob()) {
       fixBgHeight();
       makeCmUnfocusable();
@@ -106,6 +107,11 @@ function init() {
         changeFontSizeInit();
       }
     });
+    // window.addEventListener("orientationchange", function(event) {
+    //   if (detectmob()) {
+    //     fixBgHeight();
+    //   }
+    // });
     loadIndie();
     getStars();
     getStarsYear();
@@ -132,7 +138,7 @@ function detectmob() {
     return false;
   }
 }
-var ori;
+
 function isOverflown(element) {
   return element.scrollWidth > element.clientWidth;
 }
@@ -166,29 +172,22 @@ function drawButtonsShadow() {
   }
 }
 
-// function backupPostBody() {
-//   var post_body = document.querySelector('[id^="post-body-"]');
-//   if (post_body)
-//     post_body_content_bak = post_body.innerHTML;
-// }
-function onOrientationChange() {
-  if (detectmob()) {
-    fixBgHeight();
-  }
-}
 function setResizeListener() {
   window.addEventListener("resize", function () {
-    var ori_old = ori;
-    ori = getOrientation_cust();
-    if (ori != ori_old)
+    var ori_old = document.body.getAttribute("orientation");
+    var ori = getOrientation();
+    if (ori != ori_old) {
+      document.body.setAttribute("orientation", ori);
       setTimeout(onOrientationChange, 20);
+    }
     drawButtonsShadow();
   });
 }
-function getOrientation_cust() {
+function getOrientation() {
   var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  var local_orientation = width > height ? "Landscape" : "Portrait";
+  var local_orientation = width > height ? "landscape" : "portrait";
+  
   return local_orientation;
 }
 function fixBgHeight() {
@@ -380,20 +379,6 @@ function setFlag() {
     sessionStorage.setItem("inPost", "true");
   }
 }
-
-// function clearSearchInput() {
-//   var search_input = document.querySelectorAll('[id^="search-input"]');
-//   for (i = 0; i < search_input.length; i++) {
-//     search_input[i].value = "";
-//   }
-//   if (document.body.className.match("item-view")) {
-//     var post_body = document.querySelector('[id^="post-body-"]');
-//     post_body.innerHTML = post_body_content_bak;
-//   }
-//   if (document.body.className.match("home-view")) {
-//     //ajaxSearch(null);
-//   }
-// }
 
 function getCookie(cname) {
   var name = cname + '=';
