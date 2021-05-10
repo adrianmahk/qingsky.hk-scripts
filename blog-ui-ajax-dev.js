@@ -1,7 +1,9 @@
 // blog-ui-ajax-dev.js
-var inited = 0;
-var loadMainAlready = 0;
-var post_body_content_bak = "";
+// var inited = 0;
+//var loadMainAlready = 0;
+// var post_body_content_bak = "";
+var timer = 0;
+
 
 function ready(fn) {
   if (document.readyState != 'loading') {
@@ -75,17 +77,18 @@ function makeExternalLinkOpenInBlank() {
 }
 
 function init() {
-  if (!inited) {
+  if (!document.body.getAttribute("inited")) {
     ori = getOrientation_cust();
     if (detectmob()) {
       fixBgHeight();
       makeCmUnfocusable();
     }
-    if (!loadMainAlready && !document.body.className.match("item-view")) {
+    if (!document.body.getAttribute("loaded-main") && !document.body.className.match("item-view")) {
       if (!checkNeedRefresh()) {
         loadMain();
       }
-      loadMainAlready = 1;
+      //loadMainAlready = 1;
+      document.body.setAttribute("loaded-main", true);
     }
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
@@ -106,7 +109,8 @@ function init() {
     loadIndie();
     getStars();
     getStarsYear();
-    inited = 1;
+    //inited = 1;
+    document.body.setAttribute("inited", true);
     //darkModeInit();
     //changeFontSizeInit();
   }
@@ -162,11 +166,11 @@ function drawButtonsShadow() {
   }
 }
 
-function backupPostBody() {
-  var post_body = document.querySelector('[id^="post-body-"]');
-  if (post_body)
-    post_body_content_bak = post_body.innerHTML;
-}
+// function backupPostBody() {
+//   var post_body = document.querySelector('[id^="post-body-"]');
+//   if (post_body)
+//     post_body_content_bak = post_body.innerHTML;
+// }
 function onOrientationChange() {
   if (detectmob()) {
     fixBgHeight();
@@ -221,8 +225,8 @@ function detectHeader() {
   }
 }
 
-var ajax_times = 0;
-var timer;
+// var ajax_times = 0;
+
 
 function removeAllButLast(query) {
   var ele_array = document.querySelectorAll(query);
@@ -253,7 +257,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       }
 
       if (ajax_blog) {
-        ajax_times++;
+        // ajax_times++;
         var main = document.getElementById("main");
         //main.appendChild(ajax_main);
         main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
@@ -353,19 +357,22 @@ function saveScrollPos() {
 }
 function loadMain() {
   if (typeof (Storage) !== "undefined") {
-    if (sessionStorage.getItem("inPost") != null) {
-      if (sessionStorage.getItem("scrollPos") != null) {
-        var scrollPos = sessionStorage.getItem("scrollPos") ? sessionStorage.getItem("scrollPos") : 0;
-        setTimeout(function () {
-          window.scrollTo(0, scrollPos);
-        }, 1000);
-      }
-      if (sessionStorage.getItem("main") != null && sessionStorage.getItem("inPost") != null) {
+    // if (sessionStorage.getItem("inPost") != null) {
+      
+      if (sessionStorage.getItem("main") != null){// && sessionStorage.getItem("inPost") != null) {
         var main = document.getElementById("main");
         main.innerHTML = sessionStorage.getItem("main");
+        
+        // set scrollPos
+        if (sessionStorage.getItem("scrollPos") != null) {
+          var scrollPos = sessionStorage.getItem("scrollPos") ? sessionStorage.getItem("scrollPos") : 0;
+          setTimeout(function () {
+            window.scrollTo(0, scrollPos);
+          }, 1000);
+        }
       }
       sessionStorage.clear();
-    }
+    // }
   }
 }
 function setFlag() {
@@ -374,19 +381,19 @@ function setFlag() {
   }
 }
 
-function clearSearchInput() {
-  var search_input = document.querySelectorAll('[id^="search-input"]');
-  for (i = 0; i < search_input.length; i++) {
-    search_input[i].value = "";
-  }
-  if (document.body.className.match("item-view")) {
-    var post_body = document.querySelector('[id^="post-body-"]');
-    post_body.innerHTML = post_body_content_bak;
-  }
-  if (document.body.className.match("home-view")) {
-    //ajaxSearch(null);
-  }
-}
+// function clearSearchInput() {
+//   var search_input = document.querySelectorAll('[id^="search-input"]');
+//   for (i = 0; i < search_input.length; i++) {
+//     search_input[i].value = "";
+//   }
+//   if (document.body.className.match("item-view")) {
+//     var post_body = document.querySelector('[id^="post-body-"]');
+//     post_body.innerHTML = post_body_content_bak;
+//   }
+//   if (document.body.className.match("home-view")) {
+//     //ajaxSearch(null);
+//   }
+// }
 
 function getCookie(cname) {
   var name = cname + '=';
