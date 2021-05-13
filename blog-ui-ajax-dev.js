@@ -1,7 +1,4 @@
 // blog-ui-ajax-dev.js
-// var inited = 0;
-//var loadMainAlready = 0;
-// var post_body_content_bak = "";
 var timer = 0;
 // var ori;
 
@@ -157,18 +154,20 @@ function noBlur(element) {
 function drawButtonsShadow() {
   overflown_obj = document.getElementById('label-container');
   blur_obj = document.getElementById('label-container-shadow');
-  if (isOverflown(overflown_obj)) {
-    var x = overflown_obj.scrollLeft;
-    var ul = overflown_obj.scrollWidth - overflown_obj.clientWidth;
-    if (x < 10)
-      blurRight(blur_obj);
-    else if (x >= ul - 10)
-      blurLeft(blur_obj);
-    else
-      blurLeftRight(blur_obj);
-  }
-  else {
-    noBlur(blur_obj);
+  if (overflown_obj && blur_obj) {
+    if (isOverflown(overflown_obj)) {
+      var x = overflown_obj.scrollLeft;
+      var ul = overflown_obj.scrollWidth - overflown_obj.clientWidth;
+      if (x < 10)
+        blurRight(blur_obj);
+      else if (x >= ul - 10)
+        blurLeft(blur_obj);
+      else
+        blurLeftRight(blur_obj);
+    }
+    else {
+      noBlur(blur_obj);
+    }
   }
 }
 
@@ -242,8 +241,8 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
 
       var ajax_main = ajax_doc.getElementById("main");
-      var ajax_blog = ajax_doc.getElementById("main");
-      var ajax_articles = ajax_blog.getElementsByTagName("article");
+      // var ajax_blog = ajax_doc.getElementById("main");
+      var ajax_articles = ajax_main.getElementsByTagName("article");
       if (removeFirst) {
         if (ajax_articles.length > 1) {
           ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
@@ -255,7 +254,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
         }
       }
 
-      if (ajax_blog) {
+      if (ajax_main) {
         // ajax_times++;
         var main = document.getElementById("main");
         //main.appendChild(ajax_main);
@@ -314,6 +313,8 @@ function getLatestArchiveMonthLink(nextPageLink) {
 
     return archiveUrl;
   }
+
+  return nextPageLink;
 }
 function loadLinkPreventDefault(event, href, removeFirst = false, button = null) {
   event.preventDefault();
@@ -433,11 +434,6 @@ function changeFontSize() {
   setCookieFontSize(next_font_size);
 }
 function setCookieFontSize(px) {
-  //var someDate = new Date();
-  //var numberOfDaysToAdd = 30;
-  //someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-  //var str = "font_size=" + px + "; expires=" + someDate.toUTCString() + "; path=/; samesite=lax";
-  //document.cookie = str;
   writeCookie("font-size", px);
 }
 
