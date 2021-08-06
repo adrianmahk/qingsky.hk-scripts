@@ -1,5 +1,6 @@
-// blog-ui-ajax.js 20210513001 global variables into body.setAttribute, loadMain now no check inPost, cleanups
+// blog-ui-ajax.js 20210806001 makeExternalLinkOpenInBlank: now ignores #
 var timer = 0;
+// var ori;
 
 
 function ready(fn) {
@@ -48,7 +49,9 @@ function makeExternalLinkOpenInBlank() {
     '(localhost:\\d{4})|(\\/.*))' +
     '(\\/.*)?$' +
     '|' +
-    'javascript:'
+    'javascript:'+
+    '|'+
+    '#'
     , '');
   // var jsCheck = new RegExp('^(javascript:)', '');
 
