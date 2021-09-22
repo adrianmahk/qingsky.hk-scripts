@@ -1,7 +1,14 @@
-// blog-ui-ajax.js 20210806001 makeExternalLinkOpenInBlank: now ignores #
+// blog-ui-ajax.js 20210921001 showPageLoading, hidePageLoading added, called in xml and in ajaxLoad
+
 var timer = 0;
 // var ori;
+function showPageLoading() {
+  document.body.classList.add("page-loading");
+}
 
+function hidePageLoading() {
+  setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+}
 
 function ready(fn) {
   if (document.readyState != 'loading') {
@@ -65,14 +72,12 @@ function makeExternalLinkOpenInBlank() {
       if (!internalLinkRegex.test(href)) {
         anchorEl.setAttribute('target', '_blank');
       }
-    }    
-    // else if (!jsCheck.test(href)) {
-    //   if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
-    //     // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
-    //     anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\")');
-    //     console.log(anchorEl);
-    //   }
-    // }
+      // else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
+      //   // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+      //   anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\"); window.location.href = "' + anchorEl.href + '"; return false;');
+      //   console.log(anchorEl);
+      // }
+    }
   }
 }
 
@@ -268,10 +273,13 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       }
 
       makeExternalLinkOpenInBlank();
+      hidePageLoading();
     }
   };
   if (link) {
     var tempMoreMsg = "更多文章";
+
+    showPageLoading();
     if (button) {
       tempMoreMsg = button.innerHTML;
       button.innerHTML = "載入中…";
@@ -292,6 +300,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           button.innerHTML = tempMoreMsg;
           button.style["pointer-events"] = "all";
         }
+        hidePageLoading();
       }, 5000);
     }, 1000);
   }
