@@ -424,6 +424,10 @@ function changeFontSizeInit() {
     }
     if (font_size_cookie != "") {
       var body = document.body;
+      body.classList.remove("f12px");
+      body.classList.remove("f14px");
+      body.classList.remove("f16px");
+      body.classList.remove("f18px");
       body.classList.add(font_size_cookie);
       writeCookie("font-size", font_size_cookie);
     }
