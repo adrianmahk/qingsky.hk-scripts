@@ -244,8 +244,8 @@ function ajaxLoad(link, removeFirst = false, button = null) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var ajax_html = this.responseText;
+      console.log(ajax_html);
       var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
-
       var ajax_main = ajax_doc.getElementById("main");
       if (ajax_main) {
         // var ajax_blog = ajax_doc.getElementById("main");
