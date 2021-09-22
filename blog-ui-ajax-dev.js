@@ -108,7 +108,7 @@ function init() {
       } else {
         setFlag();
       }  
-      // document.body.classList.remove("page-loading");
+      document.body.classList.remove("page-loading");
     });
     
     window.addEventListener("pageshow", function (event) {
