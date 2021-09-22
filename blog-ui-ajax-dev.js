@@ -43,7 +43,7 @@ function fixDropboxImgSrc() {
       if (src.includes("www.dropbox.com")) {
           var newSrc = src.replace("www.dropbox.com", "dl.dropboxusercontent.com");
           imgEls[i].setAttribute("src", newSrc);
-          console.log(imgEls[i]);
+          // console.log(imgEls[i]);
       }
   }
 }
@@ -252,6 +252,9 @@ function ajaxLoad(link, removeFirst = false, button = null) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var ajax_html = this.responseText;
+      if (ajax_html.indexOf("</html>") == -1) {
+        return;
+      }
       //console.log(ajax_html);
       var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
       var ajax_main = ajax_doc.getElementById("main");
