@@ -9,6 +9,14 @@ function hidePageLoading() {
   setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
 }
 
+function gotoUrlWithDelay(url) {
+  showPageLoading();
+  setTimeout(function () {
+    window.location.href = url;
+  }, 100);
+  return false;
+}
+
 function ready(fn) {
   if (document.readyState != 'loading') {
     fn();
@@ -23,7 +31,7 @@ function ready(fn) {
 }
 
 ready(function () {
-  makeExternalLinkOpenInBlank();
+  //makeExternalLinkOpenInBlank();
   init();
   fixDropboxImgSrc();
 });
@@ -71,11 +79,11 @@ function makeExternalLinkOpenInBlank() {
       if (!internalLinkRegex.test(href)) {
         anchorEl.setAttribute('target', '_blank');
       }
-      // else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
-      //   // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
-      //   anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\"); window.location.href = "' + anchorEl.href + '"; return false;');
-      //   console.log(anchorEl);
-      // }
+      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
+        // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+        anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
+        console.log(anchorEl);
+      }
     }
   }
 }
@@ -244,7 +252,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var ajax_html = this.responseText;
-      console.log(ajax_html);
+      //console.log(ajax_html);
       var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
       var ajax_main = ajax_doc.getElementById("main");
       if (ajax_main) {
