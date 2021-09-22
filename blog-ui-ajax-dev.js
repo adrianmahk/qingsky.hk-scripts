@@ -67,7 +67,6 @@ function makeExternalLinkOpenInBlank() {
     '|'+
     '#'
     , '');
-  // var jsCheck = new RegExp('^(javascript:)', '');
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
@@ -82,7 +81,7 @@ function makeExternalLinkOpenInBlank() {
       else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
         // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
         anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
-        console.log(anchorEl);
+        // console.log(anchorEl);
       }
     }
   }
@@ -310,6 +309,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           button.style["pointer-events"] = "all";
         }
         hidePageLoading();
+        xhttp.abort();
       }, 5000);
     }, 1000);
   }
