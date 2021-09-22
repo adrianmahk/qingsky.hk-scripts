@@ -247,28 +247,27 @@ function ajaxLoad(link, removeFirst = false, button = null) {
       var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
 
       var ajax_main = ajax_doc.getElementById("main");
-      // var ajax_blog = ajax_doc.getElementById("main");
-      var ajax_articles = ajax_main.getElementsByTagName("article");
-      if (removeFirst) {
-        if (ajax_articles.length > 1) {
-          ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
-        }
-        else if (ajax_articles.length == 1) {
-            var next_link = ajax_doc.getElementById('blog-pager-older-link');
-            ajaxLoad(next_link.href);
-            return;
-        }
-      }
-
       if (ajax_main) {
-        // ajax_times++;
-        var main = document.getElementById("main");
-        //main.appendChild(ajax_main);
-        main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
+        // var ajax_blog = ajax_doc.getElementById("main");
+          var ajax_articles = ajax_main.getElementsByTagName("article");
+          if (removeFirst) {
+            if (ajax_articles.length > 1) {
+              ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
+            }
+            else if (ajax_articles.length == 1) {
+                var next_link = ajax_doc.getElementById('blog-pager-older-link');
+                ajaxLoad(next_link.href);
+                return;
+            }
+          }
+          // ajax_times++;
+          var main = document.getElementById("main");
+          //main.appendChild(ajax_main);
+          main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
 
-        removeAllButLast('[id*=blog-pager-older-link]');
-        removeAllButLast('[id=blog-pager]');
-        clearTimeout(timer);
+          removeAllButLast('[id*=blog-pager-older-link]');
+          removeAllButLast('[id=blog-pager]');
+          clearTimeout(timer);    
       }
 
       makeExternalLinkOpenInBlank();
