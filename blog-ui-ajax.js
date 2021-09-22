@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210921001 showPageLoading, hidePageLoading added, called in xml and in ajaxLoad
+// blog-ui-ajax.js 20210923001 gotoUrlWithDelay added, makeExternalLinkOpenInBlank now called in body.onload and make links use gotoUrlWithDelay
 
 var timer = 0;
 // var ori;
@@ -8,6 +8,14 @@ function showPageLoading() {
 
 function hidePageLoading() {
   setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+}
+
+function gotoUrlWithDelay(url) {
+  showPageLoading();
+  setTimeout(function () {
+    window.location.href = url;
+  }, 100);
+  return false;
 }
 
 function ready(fn) {
@@ -24,7 +32,7 @@ function ready(fn) {
 }
 
 ready(function () {
-  makeExternalLinkOpenInBlank();
+  //makeExternalLinkOpenInBlank();
   init();
   fixDropboxImgSrc();
 });
@@ -36,7 +44,7 @@ function fixDropboxImgSrc() {
       if (src.includes("www.dropbox.com")) {
           var newSrc = src.replace("www.dropbox.com", "dl.dropboxusercontent.com");
           imgEls[i].setAttribute("src", newSrc);
-          console.log(imgEls[i]);
+          // console.log(imgEls[i]);
       }
   }
 }
@@ -60,7 +68,6 @@ function makeExternalLinkOpenInBlank() {
     '|'+
     '#'
     , '');
-  // var jsCheck = new RegExp('^(javascript:)', '');
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
@@ -72,11 +79,11 @@ function makeExternalLinkOpenInBlank() {
       if (!internalLinkRegex.test(href)) {
         anchorEl.setAttribute('target', '_blank');
       }
-      // else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
-      //   // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
-      //   anchorEl.setAttribute('onclick', 'document.body.classList.add(\"page-loading\"); window.location.href = "' + anchorEl.href + '"; return false;');
-      //   console.log(anchorEl);
-      // }
+      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
+        // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+        anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
+        // console.log(anchorEl);
+      }
     }
   }
 }
@@ -245,31 +252,33 @@ function ajaxLoad(link, removeFirst = false, button = null) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var ajax_html = this.responseText;
-      var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
-
-      var ajax_main = ajax_doc.getElementById("main");
-      // var ajax_blog = ajax_doc.getElementById("main");
-      var ajax_articles = ajax_main.getElementsByTagName("article");
-      if (removeFirst) {
-        if (ajax_articles.length > 1) {
-          ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
-        }
-        else if (ajax_articles.length == 1) {
-            var next_link = ajax_doc.getElementById('blog-pager-older-link');
-            ajaxLoad(next_link.href);
-            return;
-        }
+      if (ajax_html.indexOf("</html>") == -1) {
+        return;
       }
-
+      //console.log(ajax_html);
+      var ajax_doc = new DOMParser().parseFromString(ajax_html, "text/html");
+      var ajax_main = ajax_doc.getElementById("main");
       if (ajax_main) {
-        // ajax_times++;
-        var main = document.getElementById("main");
-        //main.appendChild(ajax_main);
-        main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
+        // var ajax_blog = ajax_doc.getElementById("main");
+          var ajax_articles = ajax_main.getElementsByTagName("article");
+          if (removeFirst) {
+            if (ajax_articles.length > 1) {
+              ajax_articles[0].parentNode.removeChild(ajax_articles[0]);
+            }
+            else if (ajax_articles.length == 1) {
+                var next_link = ajax_doc.getElementById('blog-pager-older-link');
+                ajaxLoad(next_link.href);
+                return;
+            }
+          }
+          // ajax_times++;
+          var main = document.getElementById("main");
+          //main.appendChild(ajax_main);
+          main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
 
-        removeAllButLast('[id*=blog-pager-older-link]');
-        removeAllButLast('[id=blog-pager]');
-        clearTimeout(timer);
+          removeAllButLast('[id*=blog-pager-older-link]');
+          removeAllButLast('[id=blog-pager]');
+          clearTimeout(timer);    
       }
 
       makeExternalLinkOpenInBlank();
@@ -301,6 +310,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           button.style["pointer-events"] = "all";
         }
         hidePageLoading();
+        xhttp.abort();
       }, 5000);
     }, 1000);
   }
