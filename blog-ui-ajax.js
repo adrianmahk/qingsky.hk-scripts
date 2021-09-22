@@ -1,5 +1,4 @@
-// blog-ui-ajax.js 20210923001 gotoUrlWithDelay added, makeExternalLinkOpenInBlank now called in body.onload and make links use gotoUrlWithDelay
-
+// blog-ui-ajax.js 20210923002 hotfix: pagehide remove body.page-loading; fontSizeInit remove all classes before re-adding
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -109,7 +108,7 @@ function init() {
       } else {
         setFlag();
       }  
-      // document.body.classList.remove("page-loading");
+      document.body.classList.remove("page-loading");
     });
     
     window.addEventListener("pageshow", function (event) {
@@ -425,6 +424,10 @@ function changeFontSizeInit() {
     }
     if (font_size_cookie != "") {
       var body = document.body;
+      body.classList.remove("f12px");
+      body.classList.remove("f14px");
+      body.classList.remove("f16px");
+      body.classList.remove("f18px");
       body.classList.add(font_size_cookie);
       writeCookie("font-size", font_size_cookie);
     }
