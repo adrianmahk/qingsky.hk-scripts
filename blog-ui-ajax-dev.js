@@ -87,9 +87,9 @@ function handleLink(anchorEl) {
     '(localhost:\\d{4})|(\\/.*))' +
     '(\\/.*)?$' +
     '|' +
-    'javascript:'+
+    '^javascript:'+
     '|'+
-    '#'
+    '^#'
     , '');
  
   var jsCheck = new RegExp('^javascript:|^#');
