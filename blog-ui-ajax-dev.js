@@ -74,6 +74,7 @@ function findLink(el) {
 
 function handleLink(anchorEl) {
   var website = window.location.hostname;
+  website = website.replace("www.", "");
   
   var internalLinkRegex = new RegExp(
   '^('
@@ -84,21 +85,22 @@ function handleLink(anchorEl) {
     +'(\\/.*))'  //starts with /
     +'((\\/|\\?|\#).*'  //ends with / # $
   +')?$'
-  +'|' // or 
-  +'^(javascript:|\#|\\?).*?$'//starts with javascript: / # / ?
+  // +'|' // or 
+  // +'^(javascript:|\#|\\?).*?$'//starts with javascript: / # / ?
   , '');
-  
   var jsCheck = new RegExp('^(javascript:|\#|\\?).*?$');
   var href = anchorEl.getAttribute('href');
-  if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
-    return true; // same url, just a #
-  }
-  if (href){
-    if (!internalLinkRegex.test(href)) {
-      anchorEl.setAttribute('target', '_blank');
-    }
-    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(href)) {
-      return gotoUrlWithDelay(href); // which is always false
+  if (href) {
+    if (!jsCheck.test(href)) {
+      if (!internalLinkRegex.test(href)) {
+        anchorEl.setAttribute('target', '_blank');
+      }
+      else if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
+        return true; // same url, just a #
+      }
+      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(href)) {
+        return gotoUrlWithDelay(href); // which is always false
+      }
     }
   }
   return true;

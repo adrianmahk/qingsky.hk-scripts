@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210924001 now use click callback/handleLink instead of setupLinks; cleanups
+// blog-ui-ajax.js 20210924002 hotfix: handleLink regex and new structure
 
 var timer = 0;
 // var ori;
@@ -75,31 +75,33 @@ function findLink(el) {
 
 function handleLink(anchorEl) {
   var website = window.location.hostname;
+  website = website.replace("www.", "");
+  
   var internalLinkRegex = new RegExp(
-    '^(' +
-    '(' +
-    '(' +
-    '(http:\\/\\/|https:\\/\\/)(www\\.)' +
-    '?)' +
-    '?' + website +
-    ')' +
-    '|' +
-    '(localhost:\\d{4})|(\\/.*))' +
-    '(\\/.*)?$' +
-    '|' +
-    'javascript:'+
-    '|'+
-    '#'
-    , '');
-
-  var jsCheck = new RegExp('^(javascript:)');
+  '^('
+    +'(((http:\\/\\/|https:\\/\\/)(www\\.)?)?' + website + ')' //starts with host
+    +'|'  // or
+    +'(localhost:\\d{4})' //starts with localhost
+    +'|' // or
+    +'(\\/.*))'  //starts with /
+    +'((\\/|\\?|\#).*'  //ends with / # $
+  +')?$'
+  // +'|' // or 
+  // +'^(javascript:|\#|\\?).*?$'//starts with javascript: / # / ?
+  , '');
+  var jsCheck = new RegExp('^(javascript:|\#|\\?).*?$');
   var href = anchorEl.getAttribute('href');
-  if (href){
-    if (!internalLinkRegex.test(href)) {
-      anchorEl.setAttribute('target', '_blank');
-    }
-    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl.href)) {
-      return gotoUrlWithDelay(href); // which is always false
+  if (href) {
+    if (!jsCheck.test(href)) {
+      if (!internalLinkRegex.test(href)) {
+        anchorEl.setAttribute('target', '_blank');
+      }
+      else if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
+        return true; // same url, just a #
+      }
+      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(href)) {
+        return gotoUrlWithDelay(href); // which is always false
+      }
     }
   }
   return true;
