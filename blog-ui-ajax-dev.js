@@ -54,6 +54,10 @@ function makeExternalLinkOpenInBlank() {
   setupLinks();
 }
 function setupLinks() {
+  console.log("now uses bubble callback / handleLink");
+}
+
+function handleLink(anchorEl) {
   var website = window.location.hostname;
   var internalLinkRegex = new RegExp(
     '^(' +
@@ -72,38 +76,39 @@ function setupLinks() {
     '#'
     , '');
 
-  var anchorEls = document.querySelectorAll('a');
-  var anchorElsLength = anchorEls.length;
   var jsCheck = new RegExp('^(javascript:)');
-
-  for (var i = 0; i < anchorElsLength; i++) {
-    var anchorEl = anchorEls[i];
-    var href = anchorEl.getAttribute('href');
-    if (href){
-      if (!internalLinkRegex.test(href)) {
-        anchorEl.setAttribute('target', '_blank');
-      }
-      // else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(href)) {
-      //   anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
-      //   // console.log(anchorEl);
-      // }
+  var href = anchorEl.getAttribute('href');
+  if (href){
+    if (!internalLinkRegex.test(href)) {
+      anchorEl.setAttribute('target', '_blank');
+      return true;
+    }
+    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl.href)) {
+      return gotoUrlWithDelay(href);
     }
   }
 }
 
-function callback(e) {
-  var e = window.e || e;
-
-  if (e.target.tagName !== 'A')
-      return;
-
-  if (e.target.getAttribute("href")) {
-    var jsCheck = new RegExp('^(javascript:)');
-    if (!e.target.getAttribute('onclick') && !e.target.getAttribute('target') &&!jsCheck.test(e.target)) {
-      return gotoUrlWithDelay(e.target.getAttribute("href"));
-    }
+function findLink(el) {
+  if (el.tagName == 'A' && el.href) {
+      return el;
+  } else if (el.parentElement) {
+      return findLink(el.parentElement);
+  } else {
+      return null;
   }
-}
+};
+
+function linkCallback(e) {
+  const link = findLink(e.target);
+  console.log(link);
+  if (link == null) {
+    return;
+  }
+  else if (!handleLink(link)) {
+    e.preventDefault();
+  }
+};
 
 function init() {
   if (!document.body.getAttribute("inited")) {
@@ -123,10 +128,10 @@ function init() {
     
   
     if (document.addEventListener) {
-      document.addEventListener('click', callback, false);
+      document.addEventListener('click', linkCallback, false);
     }
     else {
-      document.attachEvent('onclick', callback);
+      document.attachEvent('onclick', linkCallback);
     }
 
     window.addEventListener("pagehide", function () {
@@ -309,7 +314,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           clearTimeout(timer);    
       }
 
-      makeExternalLinkOpenInBlank();
+      //makeExternalLinkOpenInBlank();
       hidePageLoading();
     }
   };
