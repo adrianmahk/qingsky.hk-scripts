@@ -76,24 +76,19 @@ function handleLink(anchorEl) {
   var website = window.location.hostname;
   
   var internalLinkRegex = new RegExp(
-    '^(' +
-    '(' +
-    '(' +
-    '(http:\\/\\/|https:\\/\\/)(www\\.)' +
-    '?)' +
-    '?' + website +
-    ')' +
-    '|' +
-    '(localhost:\\d{4})|(\\/.*))' +
-    '(\\/.*)?$' +
-    '|' +
-    '^javascript:'+
-    '|'+
-    '^#'
-    , '');
- 
-  var jsCheck = new RegExp('^javascript:|^#');
-  var href = anchorEl.getAttribute('href');
+  '^('
+    +'(((http:\\/\\/|https:\\/\\/)(www\\.)?)?' + website + ')' //starts with host
+    +'|'  // or
+    +'(localhost:\\d{4})' //starts with localhost
+    +'|' // or
+    +'(\\/.*))'  //starts with /
+    +'((\\/|\\?|\#).*'  //ends with / # $
+  +')?$'
+  +'|' // or 
+  +'^(javascript:|\#|\\?).*?$'//starts with javascript: / # / ?
+  , '');
+  var jsCheck = new RegExp('^(javascript:|\#|\\?).*?$');
+  
   if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
     return true; // same url, just a #
   }
@@ -101,7 +96,7 @@ function handleLink(anchorEl) {
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
-    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(anchorEl.href)) {
+    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(href)) {
       return gotoUrlWithDelay(href); // which is always false
     }
   }
