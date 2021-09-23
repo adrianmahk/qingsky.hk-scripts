@@ -87,8 +87,9 @@ function handleLink(anchorEl) {
   +'|' // or 
   +'^(javascript:|\#|\\?).*?$'//starts with javascript: / # / ?
   , '');
-  var jsCheck = new RegExp('^(javascript:|\#|\\?).*?$');
   
+  var jsCheck = new RegExp('^(javascript:|\#|\\?).*?$');
+  var href = anchorEl.getAttribute('href');
   if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
     return true; // same url, just a #
   }
