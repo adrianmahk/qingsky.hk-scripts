@@ -62,6 +62,16 @@ function setupLinks() {
   console.log("now uses bubble callback / handleLink");
 }
 
+function findLink(el) {
+  if (el.tagName == 'A' && el.href) {
+      return el;
+  } else if (el.parentElement) {
+      return findLink(el.parentElement);
+  } else {
+      return null;
+  }
+};
+
 function handleLink(anchorEl) {
   var website = window.location.hostname;
   var internalLinkRegex = new RegExp(
@@ -94,26 +104,8 @@ function handleLink(anchorEl) {
   }
 }
 
-function findLink(el) {
-  if (el.tagName == 'A' && el.href) {
-      return el;
-  } else if (el.parentElement) {
-      return findLink(el.parentElement);
-  } else {
-      return null;
-  }
-};
-
-function linkCallback(e) {
-  const link = findLink(e.target);
-  console.log(link);
-  if (link == null) {
-    return;
-  }
-  else if (!handleLink(link)) {
-    e.preventDefault();
-  }
-};
+// function linkCallback(e) { 
+// };
 
 function init() {
   if (!document.body.getAttribute("inited")) {
@@ -131,13 +123,26 @@ function init() {
     }
 
     
-  
-    if (document.addEventListener) {
-      document.addEventListener('click', linkCallback, false);
-    }
-    else {
-      document.attachEvent('onclick', linkCallback);
-    }
+    window.addEventListener('load', function (e) {
+      hidePageLoading();
+    });
+    window.addEventListener('click', function(e) {
+      const link = findLink(e.target);
+      console.log(link);
+      if (link == null) {
+        return;
+      }
+      else if (!handleLink(link)) {
+        e.preventDefault();
+      }
+    }, false);
+
+    // if (document.addEventListener) {
+    //   document.addEventListener('click', linkCallback, false);
+    // }
+    // else {
+    //   document.attachEvent('onclick', linkCallback);
+    // }
 
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
