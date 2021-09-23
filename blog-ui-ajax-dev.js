@@ -47,7 +47,7 @@ function fixDropboxImgSrc() {
   var imgEls = document.querySelectorAll('img');
   for (var i = 0; i < imgEls.length; i++) {
       var src = imgEls[i].getAttribute("src");
-      if (src.includes("www.dropbox.com")) {
+      if (src && src.includes("www.dropbox.com")) {
           var newSrc = src.replace("www.dropbox.com", "dl.dropboxusercontent.com");
           imgEls[i].setAttribute("src", newSrc);
           // console.log(imgEls[i]);
@@ -91,13 +91,13 @@ function handleLink(anchorEl) {
     '#'
     , '');
 
-  var jsCheck = new RegExp('^(javascript:)');
+  var jsCheck = new RegExp('^(javascript:|#)');
   var href = anchorEl.getAttribute('href');
   if (href){
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
     }
-    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl.href)) {
+    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(anchorEl.href)) {
       return gotoUrlWithDelay(href); // which is always false
     }
   }
