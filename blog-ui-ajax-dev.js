@@ -83,10 +83,24 @@ function setupLinks() {
       if (!internalLinkRegex.test(href)) {
         anchorEl.setAttribute('target', '_blank');
       }
-      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl)) {
-        anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
-        // console.log(anchorEl);
-      }
+      // else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(href)) {
+      //   anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
+      //   // console.log(anchorEl);
+      // }
+    }
+  }
+}
+
+function callback(e) {
+  var e = window.e || e;
+
+  if (e.target.tagName !== 'A')
+      return;
+
+  if (e.target.getAttribute("href")) {
+    var jsCheck = new RegExp('^(javascript:)');
+    if (!e.target.getAttribute('onclick') && !e.target.getAttribute('target') &&!jsCheck.test(e.target)) {
+      return gotoUrlWithDelay(e.target.getAttribute("href"));
     }
   }
 }
@@ -105,6 +119,16 @@ function init() {
       //loadMainAlready = 1;
       document.body.setAttribute("loaded-main", true);
     }
+
+    
+  
+    if (document.addEventListener) {
+      document.addEventListener('click', callback, false);
+    }
+    else {
+      document.attachEvent('onclick', callback);
+    }
+
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
         saveMain();
