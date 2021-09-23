@@ -5,8 +5,13 @@ function showPageLoading() {
   document.body.classList.add("page-loading");
 }
 
-function hidePageLoading() {
-  setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+function hidePageLoading(delay = 100) {
+  if (delay > 0) {
+    setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+  }
+  else {
+    document.body.classList.remove('page-loading');
+  }
 }
 
 function gotoUrlWithDelay(url, delay = 100, animated = true) {
@@ -141,14 +146,14 @@ function init() {
       } else {
         setFlag();
       }  
-      document.body.classList.remove("page-loading");
+      hidePageLoading(0);
     });
     
     window.addEventListener("pageshow", function (event) {
       if (event.persisted) {
         darkModeInit();
         changeFontSizeInit();
-        document.body.classList.remove("page-loading");
+        hidePageLoading(0);
       }
     });
     // window.addEventListener("orientationchange", function(event) {
