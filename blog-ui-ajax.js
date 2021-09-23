@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210923002 hotfix: pagehide remove body.page-loading; fontSizeInit remove all classes before re-adding
+// blog-ui-ajax.js 20210923003 makeExternalLinkOpenInBlank rename to setupLinks; gotoUrlWithDelay added default parameters
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -9,11 +9,13 @@ function hidePageLoading() {
   setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
 }
 
-function gotoUrlWithDelay(url) {
-  showPageLoading();
+function gotoUrlWithDelay(url, delay = 100, animated = true) {
+  if (animated) {
+    showPageLoading();
+  }
   setTimeout(function () {
     window.location.href = url;
-  }, 100);
+  }, delay);
   return false;
 }
 
@@ -48,8 +50,10 @@ function fixDropboxImgSrc() {
   }
 }
 
-
 function makeExternalLinkOpenInBlank() {
+  setupLinks();
+}
+function setupLinks() {
   var website = window.location.hostname;
   var internalLinkRegex = new RegExp(
     '^(' +
