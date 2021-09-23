@@ -74,6 +74,7 @@ function findLink(el) {
 
 function handleLink(anchorEl) {
   var website = window.location.hostname;
+  
   var internalLinkRegex = new RegExp(
     '^(' +
     '(' +
@@ -90,9 +91,12 @@ function handleLink(anchorEl) {
     '|'+
     '#'
     , '');
-
-  var jsCheck = new RegExp('^(javascript:|#)');
+ 
+  var jsCheck = new RegExp('^javascript:|#');
   var href = anchorEl.getAttribute('href');
+  if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
+    return true; // same url, just a #
+  }
   if (href){
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
