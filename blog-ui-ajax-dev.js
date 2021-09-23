@@ -119,6 +119,7 @@ function init() {
       if (event.persisted) {
         darkModeInit();
         changeFontSizeInit();
+        document.body.classList.remove("page-loading");
       }
     });
     // window.addEventListener("orientationchange", function(event) {
