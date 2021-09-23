@@ -1,12 +1,18 @@
-// blog-ui-ajax.js 20210923005 hotfix: pageshow persisted hide page-loading
+// blog-ui-ajax.js 20210924001 now use click callback/handleLink instead of setupLinks; cleanups
+
 var timer = 0;
 // var ori;
 function showPageLoading() {
   document.body.classList.add("page-loading");
 }
 
-function hidePageLoading() {
-  setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+function hidePageLoading(delay = 100) {
+  if (delay > 0) {
+    setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+  }
+  else {
+    document.body.classList.remove('page-loading');
+  }
 }
 
 function gotoUrlWithDelay(url, delay = 100, animated = true) {
@@ -42,7 +48,7 @@ function fixDropboxImgSrc() {
   var imgEls = document.querySelectorAll('img');
   for (var i = 0; i < imgEls.length; i++) {
       var src = imgEls[i].getAttribute("src");
-      if (src.includes("www.dropbox.com")) {
+      if (src && src.includes("www.dropbox.com")) {
           var newSrc = src.replace("www.dropbox.com", "dl.dropboxusercontent.com");
           imgEls[i].setAttribute("src", newSrc);
           // console.log(imgEls[i]);
@@ -54,6 +60,20 @@ function makeExternalLinkOpenInBlank() {
   setupLinks();
 }
 function setupLinks() {
+  console.log("now uses bubble callback / handleLink");
+}
+
+function findLink(el) {
+  if (el.tagName == 'A' && el.href) {
+      return el;
+  } else if (el.parentElement) {
+      return findLink(el.parentElement);
+  } else {
+      return null;
+  }
+};
+
+function handleLink(anchorEl) {
   var website = window.location.hostname;
   var internalLinkRegex = new RegExp(
     '^(' +
@@ -72,23 +92,17 @@ function setupLinks() {
     '#'
     , '');
 
-  var anchorEls = document.querySelectorAll('a');
-  var anchorElsLength = anchorEls.length;
   var jsCheck = new RegExp('^(javascript:)');
-
-  for (var i = 0; i < anchorElsLength; i++) {
-    var anchorEl = anchorEls[i];
-    var href = anchorEl.getAttribute('href');
-    if (href){
-      if (!internalLinkRegex.test(href)) {
-        anchorEl.setAttribute('target', '_blank');
-      }
-      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl)) {
-        anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
-        // console.log(anchorEl);
-      }
+  var href = anchorEl.getAttribute('href');
+  if (href){
+    if (!internalLinkRegex.test(href)) {
+      anchorEl.setAttribute('target', '_blank');
+    }
+    else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl.href)) {
+      return gotoUrlWithDelay(href); // which is always false
     }
   }
+  return true;
 }
 
 function init() {
@@ -105,6 +119,29 @@ function init() {
       //loadMainAlready = 1;
       document.body.setAttribute("loaded-main", true);
     }
+
+    
+    window.addEventListener('load', function (e) {
+      hidePageLoading();
+    });
+    window.addEventListener('click', function(e) {
+      const link = findLink(e.target);
+      console.log(link);
+      if (link == null) {
+        return;
+      }
+      else if (!handleLink(link)) {
+        e.preventDefault();
+      }
+    }, false);
+
+    // if (document.addEventListener) {
+    //   document.addEventListener('click', linkCallback, false);
+    // }
+    // else {
+    //   document.attachEvent('onclick', linkCallback);
+    // }
+
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
         saveMain();
@@ -112,14 +149,14 @@ function init() {
       } else {
         setFlag();
       }  
-      document.body.classList.remove("page-loading");
+      hidePageLoading(0);
     });
     
     window.addEventListener("pageshow", function (event) {
       if (event.persisted) {
         darkModeInit();
         changeFontSizeInit();
-        document.body.classList.remove("page-loading");
+        hidePageLoading(0);
       }
     });
     // window.addEventListener("orientationchange", function(event) {
@@ -285,7 +322,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           clearTimeout(timer);    
       }
 
-      makeExternalLinkOpenInBlank();
+      //makeExternalLinkOpenInBlank();
       hidePageLoading();
     }
   };
