@@ -96,16 +96,13 @@ function handleLink(anchorEl) {
   if (href){
     if (!internalLinkRegex.test(href)) {
       anchorEl.setAttribute('target', '_blank');
-      return true;
     }
     else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl.href)) {
-      return gotoUrlWithDelay(href);
+      return gotoUrlWithDelay(href); // which is always false
     }
   }
+  return true;
 }
-
-// function linkCallback(e) { 
-// };
 
 function init() {
   if (!document.body.getAttribute("inited")) {
