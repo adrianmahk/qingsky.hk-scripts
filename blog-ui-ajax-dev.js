@@ -74,6 +74,7 @@ function setupLinks() {
 
   var anchorEls = document.querySelectorAll('a');
   var anchorElsLength = anchorEls.length;
+  var jsCheck = new RegExp('^(javascript:)');
 
   for (var i = 0; i < anchorElsLength; i++) {
     var anchorEl = anchorEls[i];
@@ -82,8 +83,7 @@ function setupLinks() {
       if (!internalLinkRegex.test(href)) {
         anchorEl.setAttribute('target', '_blank');
       }
-      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target')) {
-        // anchorEl.setAttribute('onclick', 'gotoLinkPreventDefault(event, "'+href+'")');
+      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') &&!jsCheck.test(anchorEl)) {
         anchorEl.setAttribute('onclick', 'return gotoUrlWithDelay("'+ anchorEl.href+'");');
         // console.log(anchorEl);
       }
