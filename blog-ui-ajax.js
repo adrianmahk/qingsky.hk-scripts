@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20210923004 hotfix: added jscheck to setupLinks
+// blog-ui-ajax.js 20210923005 hotfix: pageshow persisted hide page-loading
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -119,6 +119,7 @@ function init() {
       if (event.persisted) {
         darkModeInit();
         changeFontSizeInit();
+        document.body.classList.remove("page-loading");
       }
     });
     // window.addEventListener("orientationchange", function(event) {
