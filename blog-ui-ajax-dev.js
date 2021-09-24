@@ -82,23 +82,20 @@ function handleLink(anchorEl) {
     +'|'  // or
     +'(localhost:\\d{4})' //starts with localhost
     +'|' // or
-    +'(\\/.*))'  //starts with /
+    +'((\\/|#|\\?|javascript:).*))'  //starts with / # ? javascript:
     +'((\\/|\\?|\#).*'  //ends with / # $
   +')?$'
-  // +'|' // or 
-  // +'^(javascript:|\#|\\?).*?$'//starts with javascript: / # / ?
   , '');
+  
   var jsCheck = new RegExp('^(javascript:|\#|\\?).*?$');
   var href = anchorEl.getAttribute('href');
+
   if (href) {
-    if (!jsCheck.test(href)) {
+    if (!jsCheck.test(href) && !anchorEl.getAttribute('onclick')) {
       if (!internalLinkRegex.test(href)) {
         anchorEl.setAttribute('target', '_blank');
       }
-      else if (new URL(window.location.href, "http://example.com").pathname === new URL(href, "http://example.com").pathname) {
-        return true; // same url, just a #
-      }
-      else if (!anchorEl.getAttribute('onclick') && !anchorEl.getAttribute('target') && !jsCheck.test(href)) {
+      else if ((new URL(window.location.href, "http://example.com").pathname != new URL(href, "http://example.com").pathname) && !anchorEl.getAttribute('target')) {
         return gotoUrlWithDelay(href); // which is always false
       }
     }
