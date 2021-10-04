@@ -313,8 +313,9 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           // ajax_times++;
           var main = document.getElementById("main");
           //main.appendChild(ajax_main);
-          main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
-
+          //main.insertAdjacentHTML('beforeend', ajax_main.innerHTML);
+          main.innerHTML = main.innerHTML + ajax_main.innerHTML;
+          
           removeAllButLast('[id*=blog-pager-older-link]');
           removeAllButLast('[id=blog-pager]');
           clearTimeout(timer);    
