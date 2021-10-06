@@ -123,7 +123,7 @@ function init() {
       hidePageLoading();
     });
     window.addEventListener('click', function(e) {
-      if (e.metaKey) {
+      if (e.metaKey || e.ctrlKey) {
         return;
       }
 
