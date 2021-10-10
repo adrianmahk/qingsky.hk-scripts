@@ -667,7 +667,7 @@ function getLocalStorageScrollPos() {
 }
 
 function saveScrollPos() {
-  if (document.body.classList.contains("item-view")) {
+  //if (document.body.classList.contains("item-view")) {
     if (typeof (Storage) !== "undefined") {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPercent = (document.body.getAttribute("scrollPos") != undefined) ? document.body.getAttribute("scrollPos") : getScrollPercent();
@@ -676,11 +676,11 @@ function saveScrollPos() {
       localStorage.setItem("scrollPosJson", JSON.stringify(scrollPosObj));
       
     }
-  }
+  //}
 }
 function loadScrollPos() {
 // get scrollPos
-  if (document.body.classList.contains("item-view")) {
+  //if (document.body.classList.contains("item-view")) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
@@ -691,7 +691,7 @@ function loadScrollPos() {
           console.log(scrollPosFromPercent);
           window.scrollTo(0, scrollPosFromPercent);  
       }
-  }
+  //}
 }
 function loadReadingProgress() {
   if (!document.body.classList.contains("item-view")) {
