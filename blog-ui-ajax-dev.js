@@ -142,7 +142,7 @@ function init() {
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
         saveMain();
-        saveScrollPos();
+        saveScrollPosOld();
       } else {
         setFlag();
       }  
@@ -403,7 +403,7 @@ function saveMain(str) {
   }
   return "unload!";
 }
-function saveScrollPos() {
+function saveScrollPosOld() {
   if (typeof (Storage) !== "undefined") {
     if (!document.body.className.match("item-view"))
       sessionStorage.setItem("scrollPos", document.body.scrollTop || document.scrollingElement.scrollTop);

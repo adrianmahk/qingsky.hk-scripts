@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20211010002 progress-bar and scrollPos fine tunes
+// blog-ui-ajax.js 20211011001 hotfix: func name saveScrollPos duplicated
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -142,7 +142,7 @@ function init() {
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
         saveMain();
-        saveScrollPos();
+        saveScrollPosOld();
       } else {
         setFlag();
       }  
@@ -403,7 +403,7 @@ function saveMain(str) {
   }
   return "unload!";
 }
-function saveScrollPos() {
+function saveScrollPosOld() {
   if (typeof (Storage) !== "undefined") {
     if (!document.body.className.match("item-view"))
       sessionStorage.setItem("scrollPos", document.body.scrollTop || document.scrollingElement.scrollTop);
