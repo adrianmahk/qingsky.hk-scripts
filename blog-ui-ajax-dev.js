@@ -723,14 +723,14 @@ function handleScrollEvent(e) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     if (document.body.classList.contains("collapsed-header")) {
-      var progressBars = document.getElementsByClassName("progress-bar");
+      var progressBar = document.getElementById("progress-bar-top-bar");
       var scrollPercent = getScrollPercent();
       document.body.setAttribute("scrollPos", scrollPercent);
 
-      // for (var i=0; i < progressBars.length; i++) {
-      //   progressBars[i].classList.add("visited");
-      //   progressBars[i].setAttribute("style", "width: " + scrollPercent + "%");
-      // }
+      if (progressBar) {
+        progressBar.classList.add("visited");
+        progressBar.setAttribute("style", "width: " + scrollPercent + "%");
+      }
     }
   }, 500);
   }
