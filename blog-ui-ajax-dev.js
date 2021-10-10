@@ -727,10 +727,10 @@ function handleScrollEvent(e) {
       var scrollPercent = getScrollPercent();
       document.body.setAttribute("scrollPos", scrollPercent);
 
-      for (var i=0; i < progressBars.length; i++) {
-        progressBars[i].classList.add("visited");
-        progressBars[i].setAttribute("style", "width: " + scrollPercent + "%");
-      }
+      // for (var i=0; i < progressBars.length; i++) {
+      //   progressBars[i].classList.add("visited");
+      //   progressBars[i].setAttribute("style", "width: " + scrollPercent + "%");
+      // }
     }
   }, 500);
   }
