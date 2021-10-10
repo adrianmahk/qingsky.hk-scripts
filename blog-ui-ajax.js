@@ -1,4 +1,5 @@
-// blog-ui-ajax.js 20211011001 hotfix: func name saveScrollPos duplicated
+// blog-ui-ajax.js 20211011002 cleanups and loadScrollPos when back
+
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -142,7 +143,7 @@ function init() {
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
         saveMain();
-        saveScrollPosOld();
+        //saveScrollPosOld();
       } else {
         setFlag();
       }  
@@ -400,15 +401,18 @@ function saveMain(str) {
     sessionStorage.setItem("main", str);
     sessionStorage.setItem("last-update", document.lastModified);
     sessionStorage.setItem("last-url", window.location);
-  }
-  return "unload!";
-}
-function saveScrollPosOld() {
-  if (typeof (Storage) !== "undefined") {
+
     if (!document.body.className.match("item-view"))
       sessionStorage.setItem("scrollPos", document.body.scrollTop || document.scrollingElement.scrollTop);
   }
+  return "unload!";
 }
+// function saveScrollPosOld() {
+//   if (typeof (Storage) !== "undefined") {
+//     if (!document.body.className.match("item-view"))
+//       sessionStorage.setItem("scrollPos", document.body.scrollTop || document.scrollingElement.scrollTop);
+//   }
+// }
 function loadMain() {
   if (typeof (Storage) !== "undefined") {
     // if (sessionStorage.getItem("inPost") != null) {
@@ -417,13 +421,14 @@ function loadMain() {
         var main = document.getElementById("main");
         main.innerHTML = sessionStorage.getItem("main");
         
-        // set scrollPos
+        //set scrollPos
         if (sessionStorage.getItem("scrollPos") != null) {
           var scrollPos = sessionStorage.getItem("scrollPos") ? sessionStorage.getItem("scrollPos") : 0;
           setTimeout(function () {
             window.scrollTo(0, scrollPos);
           }, 1000);
         }
+        loadScrollPos();
       }
       sessionStorage.clear();
     // }
@@ -667,7 +672,7 @@ function getLocalStorageScrollPos() {
 }
 
 function saveScrollPos() {
-  if (document.body.classList.contains("item-view")) {
+  //if (document.body.classList.contains("item-view")) {
     if (typeof (Storage) !== "undefined") {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPercent = (document.body.getAttribute("scrollPos") != undefined) ? document.body.getAttribute("scrollPos") : getScrollPercent();
@@ -676,11 +681,11 @@ function saveScrollPos() {
       localStorage.setItem("scrollPosJson", JSON.stringify(scrollPosObj));
       
     }
-  }
+  //}
 }
 function loadScrollPos() {
 // get scrollPos
-  if (document.body.classList.contains("item-view")) {
+  //if (document.body.classList.contains("item-view")) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
@@ -691,19 +696,19 @@ function loadScrollPos() {
           console.log(scrollPosFromPercent);
           window.scrollTo(0, scrollPosFromPercent);  
       }
-  }
+  //}
 }
 function loadReadingProgress() {
   if (!document.body.classList.contains("item-view")) {
     var scrollPosObj = getLocalStorageScrollPos();
     var articles = document.getElementsByTagName("article");
-    console.log(articles);
+    //console.log(articles);
     for (var i = 0; i<articles.length; i++) {
       
       var progressBars = articles[i].getElementsByClassName("progress-bar");
       var postTitleAs =  articles[i].getElementsByClassName("post-title-a");
-      console.log(progressBars);
-      console.log(postTitleAs);
+      //console.log(progressBars);
+      //console.log(postTitleAs);
       if (progressBars.length > 0 && postTitleAs.length > 0){
         var url = new URL(postTitleAs[0].href);
         if (scrollPosObj[url.pathname] != undefined) {
@@ -723,7 +728,14 @@ function handleScrollEvent(e) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     if (document.body.classList.contains("collapsed-header")) {
-      document.body.setAttribute("scrollPos", getScrollPercent());
+      var progressBar = document.getElementById("progress-bar-top-bar");
+      var scrollPercent = getScrollPercent();
+      document.body.setAttribute("scrollPos", scrollPercent);
+
+      if (progressBar) {
+        progressBar.classList.add("visited");
+        progressBar.setAttribute("style", "width: " + scrollPercent + "%");
+      }
     }
   }, 500);
   }
