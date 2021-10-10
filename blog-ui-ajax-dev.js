@@ -142,7 +142,7 @@ function init() {
     window.addEventListener("pagehide", function () {
       if (!document.body.className.match("item-view")) {
         saveMain();
-        saveScrollPosOld();
+        //saveScrollPosOld();
       } else {
         setFlag();
       }  
@@ -400,15 +400,18 @@ function saveMain(str) {
     sessionStorage.setItem("main", str);
     sessionStorage.setItem("last-update", document.lastModified);
     sessionStorage.setItem("last-url", window.location);
-  }
-  return "unload!";
-}
-function saveScrollPosOld() {
-  if (typeof (Storage) !== "undefined") {
+
     if (!document.body.className.match("item-view"))
       sessionStorage.setItem("scrollPos", document.body.scrollTop || document.scrollingElement.scrollTop);
   }
+  return "unload!";
 }
+// function saveScrollPosOld() {
+//   if (typeof (Storage) !== "undefined") {
+//     if (!document.body.className.match("item-view"))
+//       sessionStorage.setItem("scrollPos", document.body.scrollTop || document.scrollingElement.scrollTop);
+//   }
+// }
 function loadMain() {
   if (typeof (Storage) !== "undefined") {
     // if (sessionStorage.getItem("inPost") != null) {
@@ -417,13 +420,14 @@ function loadMain() {
         var main = document.getElementById("main");
         main.innerHTML = sessionStorage.getItem("main");
         
-        // set scrollPos
+        //set scrollPos
         if (sessionStorage.getItem("scrollPos") != null) {
           var scrollPos = sessionStorage.getItem("scrollPos") ? sessionStorage.getItem("scrollPos") : 0;
           setTimeout(function () {
             window.scrollTo(0, scrollPos);
           }, 1000);
         }
+        loadScrollPos();
       }
       sessionStorage.clear();
     // }
@@ -697,13 +701,13 @@ function loadReadingProgress() {
   if (!document.body.classList.contains("item-view")) {
     var scrollPosObj = getLocalStorageScrollPos();
     var articles = document.getElementsByTagName("article");
-    console.log(articles);
+    //console.log(articles);
     for (var i = 0; i<articles.length; i++) {
       
       var progressBars = articles[i].getElementsByClassName("progress-bar");
       var postTitleAs =  articles[i].getElementsByClassName("post-title-a");
-      console.log(progressBars);
-      console.log(postTitleAs);
+      //console.log(progressBars);
+      //console.log(postTitleAs);
       if (progressBars.length > 0 && postTitleAs.length > 0){
         var url = new URL(postTitleAs[0].href);
         if (scrollPosObj[url.pathname] != undefined) {
