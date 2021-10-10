@@ -1,5 +1,4 @@
-// blog-ui-ajax.js 20211010001 progress-bar and scrollPos
-
+// blog-ui-ajax.js 20211010002 progress-bar and scrollPos fine tunes
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -690,7 +689,7 @@ function loadScrollPos() {
       if (scrollPos) {
         var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight);
           console.log(scrollPosFromPercent);
-          window.scrollTo(0, scrollPosFromPercent);
+          window.scrollTo(0, scrollPosFromPercent);  
       }
   }
 }
@@ -710,6 +709,9 @@ function loadReadingProgress() {
         if (scrollPosObj[url.pathname] != undefined) {
           progressBars[0].classList.add("visited");
           progressBars[0].setAttribute("style", "width: " + scrollPosObj[url.pathname] + "%");
+        }
+        else {
+          progressBars[0].classList.remove("visited");
         }
       }
     }
