@@ -710,6 +710,9 @@ function loadReadingProgress() {
           progressBars[0].classList.add("visited");
           progressBars[0].setAttribute("style", "width: " + scrollPosObj[url.pathname] + "%");
         }
+        else {
+          progressBars[0].classList.remove("visited");
+        }
       }
     }
   }
