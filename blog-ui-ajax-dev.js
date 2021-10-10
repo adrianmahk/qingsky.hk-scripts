@@ -689,7 +689,7 @@ function loadScrollPos() {
       if (scrollPos) {
         var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight);
           console.log(scrollPosFromPercent);
-          window.scrollTo(0, scrollPosFromPercent);
+          window.scrollTo(0, scrollPosFromPercent);  
       }
   }
 }
@@ -723,7 +723,14 @@ function handleScrollEvent(e) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     if (document.body.classList.contains("collapsed-header")) {
-      document.body.setAttribute("scrollPos", getScrollPercent());
+      var progressBars = document.getElementsByClassName("progress-bar");
+      var scrollPercent = getScrollPercent();
+      document.body.setAttribute("scrollPos", scrollPercent);
+
+      for (var i=0; i < progressBars.length; i++) {
+        progressBars[i].classList.add("visited");
+        progressBars[i].setAttribute("style", "width: " + scrollPercent + "%");
+      }
     }
   }, 500);
   }
