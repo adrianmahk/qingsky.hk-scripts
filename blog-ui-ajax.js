@@ -1,5 +1,4 @@
-// blog-ui-ajax.js 20211011002 cleanups and loadScrollPos when back
-
+// blog-ui-ajax.js 20211012001 new formula for scrollPos
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -163,6 +162,7 @@ function init() {
     getStars();
     getStarsYear();
     loadScrollPos();
+    updateItemViewProgressBar();
     //inited = 1;
     document.body.setAttribute("inited", true);
     //darkModeInit();
@@ -650,16 +650,18 @@ function darkModeInit() {
 
 
 // ScrollPos
-
-function getScrollPercent() {
+function getScrollPercent(bottomPadding = 580) {
   var h = document.documentElement, 
       b = document.body,
       st = 'scrollTop',
       sh = 'scrollHeight';
   console.log("scrollHeight: " + (h[st]||b[st]));
-  var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
-  return Math.round(percent * 100) / 100;
-  
+  var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight - bottomPadding) * 100;
+  return Math.min(100, (Math.round(percent * 100) / 100));
+}
+
+function getHeightPercentInDocument(bottomHeightInPx = 580) {
+  return bottomHeightInPx / ((document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight) * 100;
 }
 
 function getLocalStorageScrollPos() {
@@ -683,7 +685,7 @@ function saveScrollPos() {
     }
   //}
 }
-function loadScrollPos() {
+function loadScrollPos(bottomPadding = 580) {
 // get scrollPos
   //if (document.body.classList.contains("item-view")) {
       var scrollPosObj = getLocalStorageScrollPos();
@@ -692,7 +694,7 @@ function loadScrollPos() {
       scrollPos = scrollPos / 100;
 
       if (scrollPos) {
-        var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight);
+        var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
           console.log(scrollPosFromPercent);
           window.scrollTo(0, scrollPosFromPercent);  
       }
@@ -711,9 +713,11 @@ function loadReadingProgress() {
       //console.log(postTitleAs);
       if (progressBars.length > 0 && postTitleAs.length > 0){
         var url = new URL(postTitleAs[0].href);
-        if (scrollPosObj[url.pathname] != undefined) {
+        var percent = scrollPosObj[url.pathname];
+        if (percent != undefined) {
+          var percentF = parseFloat(percent);
           progressBars[0].classList.add("visited");
-          progressBars[0].setAttribute("style", "width: " + scrollPosObj[url.pathname] + "%");
+          progressBars[0].setAttribute("style", "width: " + (percentF) + "%");
         }
         else {
           progressBars[0].classList.remove("visited");
@@ -728,15 +732,19 @@ function handleScrollEvent(e) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     if (document.body.classList.contains("collapsed-header")) {
-      var progressBar = document.getElementById("progress-bar-top-bar");
-      var scrollPercent = getScrollPercent();
-      document.body.setAttribute("scrollPos", scrollPercent);
+      document.body.setAttribute("scrollPos", getScrollPercent());
 
-      if (progressBar) {
-        progressBar.classList.add("visited");
-        progressBar.setAttribute("style", "width: " + scrollPercent + "%");
-      }
+      updateItemViewProgressBar();
     }
   }, 500);
+  }
+}
+function updateItemViewProgressBar() {
+  if (document.body.classList.contains("item-view")) {
+    var progressBar = document.getElementById("progress-bar-top-bar");
+    if (progressBar) {
+      progressBar.classList.add("visited");
+      progressBar.setAttribute("style", "width: " + getScrollPercent() + "%");
+    }
   }
 }
