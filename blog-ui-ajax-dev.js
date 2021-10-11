@@ -659,7 +659,10 @@ function getScrollPercent() {
   console.log("scrollHeight: " + (h[st]||b[st]));
   var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
   return Math.round(percent * 100) / 100;
-  
+}
+
+function getHeightPercentInDocument(bottomHeightInPx = 580) {
+  return bottomHeightInPx / (document.documentElement.scrollHeight || document.body.scrollHeight) * 100;
 }
 
 function getLocalStorageScrollPos() {
@@ -715,7 +718,7 @@ function loadReadingProgress() {
         if (percent != undefined) {
           var percentF = parseFloat(percent);
           progressBars[0].classList.add("visited");
-          progressBars[0].setAttribute("style", "width: " + (percentF + 15) + "%");
+          progressBars[0].setAttribute("style", "width: " + (percentF + getHeightPercentInDocument()) + "%");
         }
         else {
           progressBars[0].classList.remove("visited");
@@ -742,7 +745,7 @@ function updateItemViewProgressBar() {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
       progressBar.classList.add("visited");
-      progressBar.setAttribute("style", "width: " + (getScrollPercent() + 15) + "%");
+      progressBar.setAttribute("style", "width: " + (getScrollPercent() + getHeightPercentInDocument()) + "%");
     }
   }
 }
