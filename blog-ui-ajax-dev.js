@@ -685,7 +685,7 @@ function saveScrollPos() {
     }
   //}
 }
-function loadScrollPos() {
+function loadScrollPos(bottomPadding = 580) {
 // get scrollPos
   //if (document.body.classList.contains("item-view")) {
       var scrollPosObj = getLocalStorageScrollPos();
@@ -694,7 +694,7 @@ function loadScrollPos() {
       scrollPos = scrollPos / 100;
 
       if (scrollPos) {
-        var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight);
+        var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
           console.log(scrollPosFromPercent);
           window.scrollTo(0, scrollPosFromPercent);  
       }
