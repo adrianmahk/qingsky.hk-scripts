@@ -662,7 +662,7 @@ function getScrollPercent() {
 }
 
 function getHeightPercentInDocument(bottomHeightInPx = 580) {
-  return bottomHeightInPx / (document.documentElement.scrollHeight || document.body.scrollHeight) * 100;
+  return bottomHeightInPx / ((document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight) * 100;
 }
 
 function getLocalStorageScrollPos() {
