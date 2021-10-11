@@ -162,6 +162,7 @@ function init() {
     getStars();
     getStarsYear();
     loadScrollPos();
+    updateItemViewProgressBar();
     //inited = 1;
     document.body.setAttribute("inited", true);
     //darkModeInit();
@@ -710,9 +711,11 @@ function loadReadingProgress() {
       //console.log(postTitleAs);
       if (progressBars.length > 0 && postTitleAs.length > 0){
         var url = new URL(postTitleAs[0].href);
-        if (scrollPosObj[url.pathname] != undefined) {
+        var percent = scrollPosObj[url.pathname];
+        if (percent != undefined) {
+          var percentF = parseFloat(percent);
           progressBars[0].classList.add("visited");
-          progressBars[0].setAttribute("style", "width: " + scrollPosObj[url.pathname] + "%");
+          progressBars[0].setAttribute("style", "width: " + (percentF + 15) + "%");
         }
         else {
           progressBars[0].classList.remove("visited");
@@ -727,15 +730,19 @@ function handleScrollEvent(e) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     if (document.body.classList.contains("collapsed-header")) {
-      var progressBar = document.getElementById("progress-bar-top-bar");
-      var scrollPercent = getScrollPercent();
-      document.body.setAttribute("scrollPos", scrollPercent);
+      document.body.setAttribute("scrollPos", getScrollPercent());
 
-      if (progressBar) {
-        progressBar.classList.add("visited");
-        progressBar.setAttribute("style", "width: " + scrollPercent + "%");
-      }
+      updateItemViewProgressBar();
     }
   }, 500);
+  }
+}
+function updateItemViewProgressBar() {
+  if (document.body.classList.contains("item-view")) {
+    var progressBar = document.getElementById("progress-bar-top-bar");
+    if (progressBar) {
+      progressBar.classList.add("visited");
+      progressBar.setAttribute("style", "width: " + (getScrollPercent() + 15) + "%");
+    }
   }
 }
