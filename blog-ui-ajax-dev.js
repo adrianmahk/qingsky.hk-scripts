@@ -657,7 +657,7 @@ function getScrollPercent(bottomPadding = 580) {
       sh = 'scrollHeight';
   console.log("scrollHeight: " + (h[st]||b[st]));
   var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight - bottomPadding) * 100;
-  return Math.min(1, (Math.round(percent * 100) / 100));
+  return Math.min(100, (Math.round(percent * 100) / 100));
 }
 
 function getHeightPercentInDocument(bottomHeightInPx = 580) {
