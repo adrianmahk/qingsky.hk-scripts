@@ -650,15 +650,14 @@ function darkModeInit() {
 
 
 // ScrollPos
-
-function getScrollPercent() {
+function getScrollPercent(bottomPadding = 580) {
   var h = document.documentElement, 
       b = document.body,
       st = 'scrollTop',
       sh = 'scrollHeight';
   console.log("scrollHeight: " + (h[st]||b[st]));
-  var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
-  return Math.round(percent * 100) / 100;
+  var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight - bottomPadding) * 100;
+  return Math.min(1, (Math.round(percent * 100) / 100));
 }
 
 function getHeightPercentInDocument(bottomHeightInPx = 580) {
@@ -718,7 +717,7 @@ function loadReadingProgress() {
         if (percent != undefined) {
           var percentF = parseFloat(percent);
           progressBars[0].classList.add("visited");
-          progressBars[0].setAttribute("style", "width: " + (percentF + getHeightPercentInDocument()) + "%");
+          progressBars[0].setAttribute("style", "width: " + (percentF) + "%");
         }
         else {
           progressBars[0].classList.remove("visited");
@@ -745,7 +744,7 @@ function updateItemViewProgressBar() {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
       progressBar.classList.add("visited");
-      progressBar.setAttribute("style", "width: " + (getScrollPercent() + getHeightPercentInDocument()) + "%");
+      progressBar.setAttribute("style", "width: " + getScrollPercent() + "%");
     }
   }
 }
