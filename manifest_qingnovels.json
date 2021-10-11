@@ -18,9 +18,9 @@
     }
     ],
     "start_url": "/",
-    "display": "standalone",
+    "display": "fullscreen",
     "theme_color": "#0aa89e",
-    "background_color": "#212121",
+    "background_color": "#fefdf3",
     "orientation": "any",
     "gcm_sender_id": ""
   }
