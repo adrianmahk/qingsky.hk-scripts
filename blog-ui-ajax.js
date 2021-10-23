@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20211012001 new formula for scrollPos
+// blog-ui-ajax.js 20211023001 revert loadScrollPos in isMultipleItems
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -687,7 +687,7 @@ function saveScrollPos() {
 }
 function loadScrollPos(bottomPadding = 580) {
 // get scrollPos
-  //if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("item-view")) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
@@ -698,7 +698,7 @@ function loadScrollPos(bottomPadding = 580) {
           console.log(scrollPosFromPercent);
           window.scrollTo(0, scrollPosFromPercent);  
       }
-  //}
+  }
 }
 function loadReadingProgress() {
   if (!document.body.classList.contains("item-view")) {
