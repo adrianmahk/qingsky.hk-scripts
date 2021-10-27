@@ -691,12 +691,19 @@ function loadScrollPos(bottomPadding = 580) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
-      scrollPos = scrollPos / 100;
-
-      if (scrollPos) {
-        var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
-          console.log(scrollPosFromPercent);
-          window.scrollTo(0, scrollPosFromPercent);  
+      if (scrollPos != undefined) {
+        scrollPos = scrollPos / 100;
+        if (scrollPos > 0.99 || (document.documentElement.clientHeight > ((document.documentElement.scrollHeight || document.body.scrollHeight) - bottomPadding))) {
+          updateItemViewProgressBar(100);
+        }
+        else if (scrollPos < 0.05) {
+          updateItemViewProgressBar(0);
+        }
+        else {
+          var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
+            console.log(scrollPosFromPercent);
+            window.scrollTo(0, scrollPosFromPercent);  
+        }
       }
   }
 }
@@ -739,12 +746,15 @@ function handleScrollEvent(e) {
   }, 500);
   }
 }
-function updateItemViewProgressBar() {
+function updateItemViewProgressBar(progress = false) {
   if (document.body.classList.contains("item-view")) {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
       progressBar.classList.add("visited");
-      progressBar.setAttribute("style", "width: " + getScrollPercent() + "%");
+      progressBar.setAttribute("style", "width: " +  (progress ? progress : getScrollPercent()) + "%");
+    }
+    if (progress) {
+      document.body.setAttribute("scrollPos", progress);
     }
   }
 }
