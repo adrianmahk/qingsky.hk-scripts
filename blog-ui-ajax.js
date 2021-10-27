@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20211023001 revert loadScrollPos in isMultipleItems
+// blog-ui-ajax.js 20211028001 loadScrollPos() now adjust for 0% and 100% cases, preserve 100% progress but dont scroll to bottom; bodyInit() added 
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -158,17 +158,29 @@ function init() {
       }
       loadReadingProgress();
     });
+    window.addEventListener("resize", function () {
+      var ori_old = document.body.getAttribute("orientation");
+      var ori = getOrientation();
+      if (ori != ori_old) {
+        document.body.setAttribute("orientation", ori);
+      }
+      drawButtonsShadow();
+    });
     loadIndie();
+    loadScrollPos();
+  
+    document.body.setAttribute("inited", true);
+
+    //Obselete
     getStars();
     getStarsYear();
-    loadScrollPos();
-    updateItemViewProgressBar();
-    //inited = 1;
-    document.body.setAttribute("inited", true);
-    //darkModeInit();
-    //changeFontSizeInit();
   }
   console.log("init");
+}
+function bodyInit() {
+  darkModeInit();
+  changeFontSizeInit();
+  showPageLoading();
 }
 
 function detectmob() {
@@ -223,15 +235,7 @@ function drawButtonsShadow() {
 }
 
 function setResizeListener() {
-  window.addEventListener("resize", function () {
-    var ori_old = document.body.getAttribute("orientation");
-    var ori = getOrientation();
-    if (ori != ori_old) {
-      document.body.setAttribute("orientation", ori);
-      //setTimeout(onOrientationChange, 20);
-    }
-    drawButtonsShadow();
-  });
+  
 }
 function getOrientation() {
   var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -691,12 +695,22 @@ function loadScrollPos(bottomPadding = 580) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
-      scrollPos = scrollPos / 100;
-
-      if (scrollPos) {
-        var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
-          console.log(scrollPosFromPercent);
-          window.scrollTo(0, scrollPosFromPercent);  
+      if (scrollPos != undefined) {
+        scrollPos = scrollPos / 100;
+        if (scrollPos > 0.99 || (document.documentElement.clientHeight > ((document.documentElement.scrollHeight || document.body.scrollHeight) - bottomPadding))) {
+          updateItemViewProgressBar(100);
+        }
+        else if (scrollPos < 0.05) {
+          updateItemViewProgressBar(0);
+        }
+        else {
+          var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
+            console.log(scrollPosFromPercent);
+            window.scrollTo(0, scrollPosFromPercent);  
+        }
+      }
+      else {
+        updateItemViewProgressBar(0);
       }
   }
 }
@@ -731,7 +745,8 @@ function handleScrollEvent(e) {
   if (document.body.classList.contains("item-view")) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
-    if (document.body.classList.contains("collapsed-header")) {
+    var scrollPercent = getScrollPercent();
+    if (document.body.classList.contains("collapsed-header") && scrollPercent > 1) {
       document.body.setAttribute("scrollPos", getScrollPercent());
 
       updateItemViewProgressBar();
@@ -739,12 +754,19 @@ function handleScrollEvent(e) {
   }, 500);
   }
 }
-function updateItemViewProgressBar() {
+function updateItemViewProgressBar(progress = false) {
   if (document.body.classList.contains("item-view")) {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
       progressBar.classList.add("visited");
-      progressBar.setAttribute("style", "width: " + getScrollPercent() + "%");
+      progressBar.setAttribute("style", "width: " +  (progress ? progress : getScrollPercent()) + "%");
+    }
+    else {
+      alert('null');
+    }
+
+    if (progress) {
+      document.body.setAttribute("scrollPos", progress);
     }
   }
 }
