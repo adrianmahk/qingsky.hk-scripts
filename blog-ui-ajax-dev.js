@@ -167,11 +167,16 @@ function init() {
       drawButtonsShadow();
     });
     loadIndie();
+    setTimeout(() => {
+      loadScrollPos();
+      updateItemViewProgressBar();
+    }, 100);
   
-    //inited = 1;
     document.body.setAttribute("inited", true);
-    //darkModeInit();
-    //changeFontSizeInit();
+
+    //Obselete
+    getStars();
+    getStarsYear();
   }
   console.log("init");
 }
@@ -179,12 +184,6 @@ function bodyInit() {
   darkModeInit();
   changeFontSizeInit();
   showPageLoading();
-  loadScrollPos();
-  updateItemViewProgressBar();
-  
-  //Obselete
-  getStars();
-  getStarsYear();
 }
 
 function detectmob() {
