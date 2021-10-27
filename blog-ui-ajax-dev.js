@@ -709,6 +709,9 @@ function loadScrollPos(bottomPadding = 580) {
             window.scrollTo(0, scrollPosFromPercent);  
         }
       }
+      else {
+        updateItemViewProgressBar(0);
+      }
   }
 }
 function loadReadingProgress() {
