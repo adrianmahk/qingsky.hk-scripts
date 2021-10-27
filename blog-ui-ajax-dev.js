@@ -158,17 +158,33 @@ function init() {
       }
       loadReadingProgress();
     });
+    window.addEventListener("resize", function () {
+      var ori_old = document.body.getAttribute("orientation");
+      var ori = getOrientation();
+      if (ori != ori_old) {
+        document.body.setAttribute("orientation", ori);
+      }
+      drawButtonsShadow();
+    });
     loadIndie();
-    getStars();
-    getStarsYear();
-    loadScrollPos();
-    updateItemViewProgressBar();
+  
     //inited = 1;
     document.body.setAttribute("inited", true);
     //darkModeInit();
     //changeFontSizeInit();
   }
   console.log("init");
+}
+function bodyInit() {
+  darkModeInit();
+  changeFontSizeInit();
+  showPageLoading();
+  loadScrollPos();
+  updateItemViewProgressBar();
+  
+  //Obselete
+  getStars();
+  getStarsYear();
 }
 
 function detectmob() {
@@ -223,15 +239,7 @@ function drawButtonsShadow() {
 }
 
 function setResizeListener() {
-  window.addEventListener("resize", function () {
-    var ori_old = document.body.getAttribute("orientation");
-    var ori = getOrientation();
-    if (ori != ori_old) {
-      document.body.setAttribute("orientation", ori);
-      //setTimeout(onOrientationChange, 20);
-    }
-    drawButtonsShadow();
-  });
+  
 }
 function getOrientation() {
   var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -738,7 +746,8 @@ function handleScrollEvent(e) {
   if (document.body.classList.contains("item-view")) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
-    if (document.body.classList.contains("collapsed-header")) {
+    var scrollPercent = getScrollPercent();
+    if (document.body.classList.contains("collapsed-header") && scrollPercent > 1) {
       document.body.setAttribute("scrollPos", getScrollPercent());
 
       updateItemViewProgressBar();
