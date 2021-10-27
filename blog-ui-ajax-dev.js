@@ -167,10 +167,7 @@ function init() {
       drawButtonsShadow();
     });
     loadIndie();
-    setTimeout(() => {
-      loadScrollPos();
-      updateItemViewProgressBar();
-    }, 100);
+    loadScrollPos();
   
     document.body.setAttribute("inited", true);
 
@@ -761,6 +758,10 @@ function updateItemViewProgressBar(progress = false) {
       progressBar.classList.add("visited");
       progressBar.setAttribute("style", "width: " +  (progress ? progress : getScrollPercent()) + "%");
     }
+    else {
+      alert('null');
+    }
+
     if (progress) {
       document.body.setAttribute("scrollPos", progress);
     }
