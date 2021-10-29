@@ -1,13 +1,17 @@
-// blog-ui-ajax.js 20211028001 loadScrollPos() now adjust for 0% and 100% cases, preserve 100% progress but dont scroll to bottom; bodyInit() added 
+// blog-ui-ajax.js 20211029001 progressBar enhancement
 var timer = 0;
 // var ori;
 function showPageLoading() {
   document.body.classList.add("page-loading");
 }
 
-function hidePageLoading(delay = 100) {
+function hidePageLoading(delay = 1000) {
   if (delay > 0) {
-    setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+    document.body.classList.add('page-loading-end');
+    setTimeout(() => {
+      document.body.classList.remove('page-loading');
+      document.body.classList.remove('page-loading-end');
+    }, delay);
   }
   else {
     document.body.classList.remove('page-loading');
@@ -691,7 +695,7 @@ function saveScrollPos() {
 }
 function loadScrollPos(bottomPadding = 580) {
 // get scrollPos
-  if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("is-post")) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
@@ -715,7 +719,7 @@ function loadScrollPos(bottomPadding = 580) {
   }
 }
 function loadReadingProgress() {
-  if (!document.body.classList.contains("item-view")) {
+  if (!document.body.classList.contains("is-post")) {
     var scrollPosObj = getLocalStorageScrollPos();
     var articles = document.getElementsByTagName("article");
     //console.log(articles);
@@ -742,7 +746,7 @@ function loadReadingProgress() {
 }
 var scrollTimer = 0;
 function handleScrollEvent(e) {
-  if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("is-post")) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     var scrollPercent = getScrollPercent();
@@ -755,14 +759,14 @@ function handleScrollEvent(e) {
   }
 }
 function updateItemViewProgressBar(progress = false) {
-  if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("is-post")) {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
       progressBar.classList.add("visited");
       progressBar.setAttribute("style", "width: " +  (progress ? progress : getScrollPercent()) + "%");
     }
     else {
-     //alert('null');
+      //alert('null');
     }
 
     if (progress) {
