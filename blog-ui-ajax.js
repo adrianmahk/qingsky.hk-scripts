@@ -762,7 +762,7 @@ function updateItemViewProgressBar(progress = false) {
       progressBar.setAttribute("style", "width: " +  (progress ? progress : getScrollPercent()) + "%");
     }
     else {
-      alert('null');
+     //alert('null');
     }
 
     if (progress) {
