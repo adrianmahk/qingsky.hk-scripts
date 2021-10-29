@@ -7,7 +7,11 @@ function showPageLoading() {
 
 function hidePageLoading(delay = 100) {
   if (delay > 0) {
-    setTimeout(function () {document.body.classList.remove('page-loading');}, 100);
+    document.body.classList.add('page-loading-end');
+    setTimeout(() => {
+      document.body.classList.remove('page-loading');
+      document.body.classList.remove('page-loading-end');
+    }, delay);
   }
   else {
     document.body.classList.remove('page-loading');
