@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20211029002 progressBar enhancement small fixes
+// blog-ui-ajax.js 20211029003 progressBar enhancement: use animationiterationend event instead
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -9,9 +9,6 @@ function hidePageLoading(delay = 1000) {
   if (delay > 0) {
     document.body.classList.remove('page-loading');
     document.body.classList.add('page-loading-end');
-    setTimeout(() => {
-      document.body.classList.remove('page-loading-end');
-    }, delay);
   }
   else {
     document.body.classList.remove('page-loading');
@@ -169,6 +166,13 @@ function init() {
         document.body.setAttribute("orientation", ori);
       }
       drawButtonsShadow();
+    });
+    window.addEventListener('animationiteration', function(event) {
+      if (event.target.classList.contains('loading-bar')) {
+        if (document.body.classList.contains('page-loading-end')) {
+          document.body.classList.remove('page-loading-end');
+        }
+      }
     });
     loadIndie();
     loadScrollPos();
