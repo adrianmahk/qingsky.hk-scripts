@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20211029001 progressBar enhancement
+// blog-ui-ajax.js 20211029002 progressBar enhancement small fixes
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -7,9 +7,9 @@ function showPageLoading() {
 
 function hidePageLoading(delay = 1000) {
   if (delay > 0) {
+    document.body.classList.remove('page-loading');
     document.body.classList.add('page-loading-end');
     setTimeout(() => {
-      document.body.classList.remove('page-loading');
       document.body.classList.remove('page-loading-end');
     }, delay);
   }
