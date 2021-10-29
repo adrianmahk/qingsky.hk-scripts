@@ -5,7 +5,7 @@ function showPageLoading() {
   document.body.classList.add("page-loading");
 }
 
-function hidePageLoading(delay = 100) {
+function hidePageLoading(delay = 1000) {
   if (delay > 0) {
     document.body.classList.add('page-loading-end');
     setTimeout(() => {
