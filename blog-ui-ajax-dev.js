@@ -691,7 +691,7 @@ function saveScrollPos() {
 }
 function loadScrollPos(bottomPadding = 580) {
 // get scrollPos
-  if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("is-post")) {
       var scrollPosObj = getLocalStorageScrollPos();
       var scrollPos = scrollPosObj ? scrollPosObj[window.location.pathname] : 0;
       console.log(scrollPos);
@@ -715,7 +715,7 @@ function loadScrollPos(bottomPadding = 580) {
   }
 }
 function loadReadingProgress() {
-  if (!document.body.classList.contains("item-view")) {
+  if (!document.body.classList.contains("is-post")) {
     var scrollPosObj = getLocalStorageScrollPos();
     var articles = document.getElementsByTagName("article");
     //console.log(articles);
@@ -742,7 +742,7 @@ function loadReadingProgress() {
 }
 var scrollTimer = 0;
 function handleScrollEvent(e) {
-  if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("is-post")) {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(function (){
     var scrollPercent = getScrollPercent();
@@ -755,7 +755,7 @@ function handleScrollEvent(e) {
   }
 }
 function updateItemViewProgressBar(progress = false) {
-  if (document.body.classList.contains("item-view")) {
+  if (document.body.classList.contains("is-post")) {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
       progressBar.classList.add("visited");
