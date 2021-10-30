@@ -1,4 +1,4 @@
-// blog-ui-ajax.js 20211029003 progressBar enhancement: use animationiterationend event instead
+// blog-ui-ajax.js 20211029004 fixes in hidePageLoading; changes to handleLink to handle ajax-load class instead of loadLinkPreventDefault
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -7,8 +7,10 @@ function showPageLoading() {
 
 function hidePageLoading(delay = 1000) {
   if (delay > 0) {
-    document.body.classList.remove('page-loading');
-    document.body.classList.add('page-loading-end');
+    if (document.body.classList.contains('page-loading')) {
+      document.body.classList.remove('page-loading');
+      document.body.classList.add('page-loading-end');
+    }
   }
   else {
     document.body.classList.remove('page-loading');
@@ -74,6 +76,15 @@ function findLink(el) {
 };
 
 function handleLink(anchorEl) {
+  if (anchorEl.classList.contains("ajax-load-home")) {
+    ajaxLoad(getLatestArchiveMonthLink(anchorEl.href), true, anchorEl);
+    return false;
+  }
+  else if (anchorEl.classList.contains("ajax-load")){
+    ajaxLoad(anchorEl.href, false, anchorEl);
+    return false;
+  }
+
   var website = window.location.hostname;
   website = website.replace("www.", "");
   
@@ -134,6 +145,7 @@ function init() {
       }
       else if (!handleLink(link)) {
         e.preventDefault();
+        e.stopPropagation();
       }
     }, false);
     
@@ -169,6 +181,7 @@ function init() {
     });
     window.addEventListener('animationiteration', function(event) {
       if (event.target.classList.contains('loading-bar')) {
+        console.log("animationiteration");
         if (document.body.classList.contains('page-loading-end')) {
           document.body.classList.remove('page-loading-end');
         }
@@ -355,7 +368,7 @@ function ajaxLoad(link, removeFirst = false, button = null) {
           button.innerHTML = tempMoreMsg;
           button.style["pointer-events"] = "all";
         }
-        hidePageLoading();
+        hidePageLoading(0);
         xhttp.abort();
       }, 5000);
     }, 1000);
