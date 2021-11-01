@@ -3,6 +3,10 @@ var timer = 0;
 // var ori;
 function showPageLoading() {
   document.body.classList.add("page-loading");
+  var el = document.getElementById('loading-bar');
+  el.style.animation = 'none';
+  el.offsetHeight; /* trigger reflow */
+  el.style.animation = null; 
 }
 
 function hidePageLoading(delay = 1000) {
@@ -181,7 +185,6 @@ function init() {
     });
     window.addEventListener('animationiteration', function(event) {
       if (event.target.classList.contains('loading-bar')) {
-        console.log("animationiteration");
         if (document.body.classList.contains('page-loading-end')) {
           document.body.classList.remove('page-loading-end');
         }
