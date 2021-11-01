@@ -1,8 +1,14 @@
-// blog-ui-ajax.js 20211029004 fixes in hidePageLoading; changes to handleLink to handle ajax-load class instead of loadLinkPreventDefault
+// blog-ui-ajax.js 20211101001 reflow animation for showPageLoading, use 5 loops instead of infinite to avoid cpu usage in odd situations
 var timer = 0;
 // var ori;
 function showPageLoading() {
   document.body.classList.add("page-loading");
+  var el = document.getElementById('loading-bar');
+  if (el) {
+    el.style.animation = 'none';
+    el.offsetHeight; /* trigger reflow */
+    el.style.animation = null; 
+  }
 }
 
 function hidePageLoading(delay = 1000) {
@@ -181,7 +187,6 @@ function init() {
     });
     window.addEventListener('animationiteration', function(event) {
       if (event.target.classList.contains('loading-bar')) {
-        console.log("animationiteration");
         if (document.body.classList.contains('page-loading-end')) {
           document.body.classList.remove('page-loading-end');
         }

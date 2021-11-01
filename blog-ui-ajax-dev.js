@@ -4,9 +4,11 @@ var timer = 0;
 function showPageLoading() {
   document.body.classList.add("page-loading");
   var el = document.getElementById('loading-bar');
-  el.style.animation = 'none';
-  el.offsetHeight; /* trigger reflow */
-  el.style.animation = null; 
+  if (el) {
+    el.style.animation = 'none';
+    el.offsetHeight; /* trigger reflow */
+    el.style.animation = null; 
+  }
 }
 
 function hidePageLoading(delay = 1000) {
