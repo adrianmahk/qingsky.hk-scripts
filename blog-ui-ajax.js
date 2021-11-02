@@ -1,4 +1,5 @@
-// blog-ui-ajax.js 20211101001 reflow animation for showPageLoading, use 5 loops instead of infinite to avoid cpu usage in odd situations
+// blog-ui-ajax.js 20211103001 minor changes to optimize layout cpu
+
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -264,18 +265,18 @@ function setResizeListener() {
   
 }
 function getOrientation() {
-  var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  var width = window.innerWidth || document.documentElement.clientWidth;
+  var height = window.innerHeight || document.documentElement.clientHeight;
   var local_orientation = width > height ? "landscape" : "portrait";
   
   return local_orientation;
 }
 function fixBgHeight() {
-  var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  var height = window.innerHeight || document.documentElement.clientHeight;
   if (height > 500) {
     var bg_div = document.getElementById("bg-div");
     if (window.matchMedia('(max-aspect-ratio: 1920/1200) and (min-height: 501px)').matches) {
-      var bg_fixed_h = document.documentElement.clientHeight + 100;
+      var bg_fixed_h = height + 100;
       bg_div.style.backgroundSize = "auto " + bg_fixed_h + "px";
     }
     else {
@@ -690,10 +691,6 @@ function getScrollPercent(bottomPadding = 580) {
   return Math.min(100, (Math.round(percent * 100) / 100));
 }
 
-function getHeightPercentInDocument(bottomHeightInPx = 580) {
-  return bottomHeightInPx / ((document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight) * 100;
-}
-
 function getLocalStorageScrollPos() {
   if (typeof (Storage) !== "undefined") {
       var scrollPosJson = localStorage.getItem("scrollPosJson");
@@ -707,7 +704,7 @@ function saveScrollPos() {
   //if (document.body.classList.contains("item-view")) {
     if (typeof (Storage) !== "undefined") {
       var scrollPosObj = getLocalStorageScrollPos();
-      var scrollPercent = (document.body.getAttribute("scrollPos") != undefined) ? document.body.getAttribute("scrollPos") : getScrollPercent();
+      var scrollPercent = (document.body.getAttribute("scrollPos") != undefined) ? document.body.getAttribute("scrollPos") : 0;
     
       scrollPosObj[window.location.pathname] =  scrollPercent;
       localStorage.setItem("scrollPosJson", JSON.stringify(scrollPosObj));
@@ -730,7 +727,7 @@ function loadScrollPos(bottomPadding = 580) {
           updateItemViewProgressBar(0);
         }
         else {
-          var scrollPosFromPercent = scrollPos * ((document.body.clientHeight || document.documentElement.clientHeight) - document.documentElement.clientHeight - bottomPadding);
+          var scrollPosFromPercent = scrollPos * (document.body.clientHeight - document.documentElement.clientHeight - bottomPadding);
             console.log(scrollPosFromPercent);
             window.scrollTo(0, scrollPosFromPercent);  
         }
@@ -773,7 +770,7 @@ function handleScrollEvent(e) {
   scrollTimer = setTimeout(function (){
     var scrollPercent = getScrollPercent();
     if (document.body.classList.contains("collapsed-header") && scrollPercent > 1) {
-      document.body.setAttribute("scrollPos", getScrollPercent());
+      document.body.setAttribute("scrollPos", scrollPercent);
 
       updateItemViewProgressBar();
     }
@@ -784,8 +781,8 @@ function updateItemViewProgressBar(progress = false) {
   if (document.body.classList.contains("is-post")) {
     var progressBar = document.getElementById("progress-bar-top-bar");
     if (progressBar) {
-      progressBar.classList.add("visited");
       progressBar.setAttribute("style", "width: " +  (progress ? progress : getScrollPercent()) + "%");
+      progressBar.classList.add("visited");
     }
     else {
       //alert('null');
