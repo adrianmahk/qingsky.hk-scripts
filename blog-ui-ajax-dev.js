@@ -493,10 +493,9 @@ function changeFontSizeInit() {
     }
     if (font_size_cookie != "") {
       var body = document.body;
-      body.classList.remove("f12px");
-      body.classList.remove("f14px");
-      body.classList.remove("f16px");
-      body.classList.remove("f18px");
+      body.classList.remove("f12px", "f14px", "f15px", "f16px", "f18px");
+      //body.classList.remove("font-xs", "font-s", "font-m", "font-l", "font-xl");
+
       body.classList.add(font_size_cookie);
       writeCookie("font-size", font_size_cookie);
     }
@@ -510,6 +509,9 @@ function changeFontSize() {
     next_font_size = "f14px";
   }
   else if (body.classList.contains("f14px")) {
+    next_font_size = "f15px";
+  }
+  else if (body.classList.contains("f15px")) {
     next_font_size = "f16px";
   }
   else if (body.classList.contains("f16px")) {
@@ -518,11 +520,27 @@ function changeFontSize() {
   else if (body.classList.contains("f18px")) {
     next_font_size = "f12px";
   }
+  
+  
+  // if (body.classList.contains("font-xs")) {
+  //   next_font_size = "font-s";
+  // }
+  // else if (body.classList.contains("font-s")) {
+  //   next_font_size = "font-m";
+  // }
+  // else if (body.classList.contains("font-m")) {
+  //   next_font_size = "font-l";
+  // }
+  // else if (body.classList.contains("font-l")) {
+  //   next_font_size = "font-xl";
+  // }
+  // else if (body.classList.contains("font-xl")) {
+  //   next_font_size = "font-xs";
+  // }
 
-  body.classList.remove("f12px");
-  body.classList.remove("f14px");
-  body.classList.remove("f16px");
-  body.classList.remove("f18px");
+  body.classList.remove("f12px", "f14px", "f15px", "f16px", "f18px");
+  // body.classList.remove("font-xs", "font-s", "font-m", "font-l", "font-xl");
+
   body.classList.add(next_font_size);
   setCookieFontSize(next_font_size);
 }
