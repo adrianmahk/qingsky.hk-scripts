@@ -539,7 +539,7 @@ function changeFontSize() {
   //   next_font_size = "font-xs";
   // }
 
-  body.classList.remove("f12px", "f14px", "f15px", "f16px", "f18px");
+  body.classList.remove("f12px", "f14px", "f15px", "f16px", "f17px", "f18px");
   // body.classList.remove("font-xs", "font-s", "font-m", "font-l", "font-xl");
 
   body.classList.add(next_font_size);
