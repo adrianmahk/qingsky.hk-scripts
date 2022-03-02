@@ -1,4 +1,5 @@
 // blog-ui-ajax-dev.js
+
 var timer = 0;
 // var ori;
 function showPageLoading() {
@@ -493,7 +494,7 @@ function changeFontSizeInit() {
     }
     if (font_size_cookie != "") {
       var body = document.body;
-      body.classList.remove("f12px", "f14px", "f15px", "f16px", "f18px");
+      body.classList.remove("f12px", "f13px", "f14px", "f15px", "f16px", "f17px", "f18px");
       //body.classList.remove("font-xs", "font-s", "font-m", "font-l", "font-xl");
 
       body.classList.add(font_size_cookie);
@@ -505,7 +506,7 @@ function changeFontSize() {
   var body = document.body;
   var next_font_size = "f16px";
   
-  if (body.classList.contains("f12px")) {
+  if (body.classList.contains("f12px") || body.classList.contains("f13px")) {
     next_font_size = "f14px";
   }
   else if (body.classList.contains("f14px")) {
@@ -515,10 +516,10 @@ function changeFontSize() {
     next_font_size = "f16px";
   }
   else if (body.classList.contains("f16px")) {
-    next_font_size = "f18px";
+    next_font_size = "f17px";
   }
-  else if (body.classList.contains("f18px")) {
-    next_font_size = "f12px";
+  else if (body.classList.contains("f17px") || body.classList.contains("f18px")) {
+    next_font_size = "f13px";
   }
   
   
