@@ -187,6 +187,7 @@ function init() {
       drawButtonsShadow();
     });
     window.addEventListener('animationiteration', function(event) {
+      console.log('animationiteration');
       if (event.target.classList.contains('loading-bar')) {
         if (document.body.classList.contains('page-loading-end')) {
           document.body.classList.remove('page-loading-end');
